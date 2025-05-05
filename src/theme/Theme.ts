@@ -14,6 +14,13 @@ declare module '@mui/material/styles' {
       accentForeground: string;
       border: string;
       ring: string;
+      sectionHeader: string;
+      userProfileBackground: string;
+    };
+    card: {
+      background: string;
+      borderRadius: string;
+      boxShadow: string;
     };
   }
   interface ThemeOptions {
@@ -26,6 +33,13 @@ declare module '@mui/material/styles' {
       accentForeground?: string;
       border?: string;
       ring?: string;
+      sectionHeader?: string;
+      userProfileBackground?: string;
+    };
+    card?: {
+      background?: string;
+      borderRadius?: string;
+      boxShadow?: string;
     };
   }
 }
@@ -51,14 +65,21 @@ const baseTheme: ThemeOptions = {
     fontFamily: "'Inter', sans-serif",
   },
   sidebar: {
-    background: 'hsl(var(--sidebar-background))',
-    foreground: 'hsl(var(--sidebar-foreground))',
-    primary: 'hsl(var(--sidebar-primary))',
-    primaryForeground: 'hsl(var(--sidebar-primary-foreground))',
-    accent: 'hsl(var(--sidebar-accent))',
-    accentForeground: 'hsl(var(--sidebar-accent-foreground))',
-    border: 'hsl(var(--sidebar-border))',
-    ring: 'hsl(var(--sidebar-ring))',
+    background: '#16213E', // deep blue
+    foreground: '#FFFFFF', // white
+    primary: '#2563eb', // accent blue
+    primaryForeground: '#FFFFFF',
+    accent: '#2563eb',
+    accentForeground: '#FFFFFF',
+    border: 'rgba(255,255,255,0.08)',
+    ring: '#2563eb',
+    sectionHeader: 'rgba(255,255,255,0.4)',
+    userProfileBackground: '#1B254B',
+  },
+  card: {
+    background: '#FFFFFF',
+    borderRadius: '16px',
+    boxShadow: '0 2px 12px 0 rgba(16,30,54,0.08)',
   },
 };
 
