@@ -1,5 +1,5 @@
 import React from 'react';
-import { 
+import {
   AppBar,
   Toolbar,
   InputBase,
@@ -10,11 +10,12 @@ import {
   MenuItem,
   Divider,
   Box,
-  styled
+  styled,
+  Typography
 } from '@mui/material';
-import { 
+import {
   Search as SearchIcon,
-  Notifications as NotificationsIcon,
+  NotificationsOutlined as NotificationsIcon,
   Add as AddIcon
 } from '@mui/icons-material';
 import { useTheme } from '@mui/material/styles';
@@ -95,10 +96,20 @@ const Header = () => {
           <IconButton
             color="inherit"
             onClick={handleMenuOpen}
-            sx={{ position: 'relative', background: theme.palette.primary.main, color: theme.palette.common.white, '&:hover': { background: theme.palette.primary.dark } }}
+            sx={{
+              position: 'relative',
+              // background: theme.palette.primary.main, 
+              // color: theme.palette.common.white, 
+              '&:hover': {
+                backgroundColor: theme.palette.action.hover // Subtle hover effect
+              }
+            }}
           >
             <NotificationBadge badgeContent={3} color="error">
-              <NotificationsIcon fontSize="medium" sx={{ color: theme.palette.common.white }} />
+              <NotificationsIcon fontSize="medium" sx={{
+                color: theme.palette.text.secondary
+              }}
+              />
             </NotificationBadge>
           </IconButton>
 
@@ -113,35 +124,35 @@ const Header = () => {
                 width: 320,
                 maxHeight: 320,
                 mt: 1,
-                borderRadius: 8,
+                // borderRadius: 8,
                 boxShadow: theme.shadows[3],
                 background: theme.palette.background.paper,
               }
             }}
           >
-            <MenuItem dense sx={{ typography: 'subtitle2', cursor: 'default' }}>
+            <MenuItem dense sx={{  variant: 'subtitle2', cursor: 'default' }}>
               Notifications
             </MenuItem>
             <Divider />
 
             <Box sx={{ maxHeight: 240, overflow: 'auto' }}>
               {[1, 2, 3].map((item) => (
-                <MenuItem key={item} sx={{ py: 1.5 }}>
-                  <Box>
-                    <Box component="p" sx={{ typography: 'body2', fontWeight: 500 }}>
+                <MenuItem key={item}>
+                  <Box p={0}>
+                    <Typography variant="body2" sx={{ fontWeight: 500 }}>
                       New lead assigned to you
-                    </Box>
-                    <Box component="p" sx={{ typography: 'caption', color: 'text.secondary' }}>
+                    </Typography>
+                    <Typography variant="caption" sx={{ color: 'text.secondary' }}>
                       Acme Inc. • 15 minutes ago
-                    </Box>
+                    </Typography>
                   </Box>
                 </MenuItem>
               ))}
             </Box>
 
             <Divider />
-            <MenuItem sx={{ 
-              typography: 'body2',
+            <MenuItem sx={{
+              variant:'caption',
               color: theme.palette.primary.main,
               justifyContent: 'center',
               background: 'transparent',

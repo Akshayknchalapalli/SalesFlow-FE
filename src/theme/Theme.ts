@@ -67,12 +67,12 @@ const baseTheme: ThemeOptions = {
   sidebar: {
     background: '#16213E', // deep blue
     foreground: '#FFFFFF', // white
-    primary: '#2563eb', // accent blue
+    primary: '#3b82f6', // accent blue
     primaryForeground: '#FFFFFF',
-    accent: '#2563eb',
+    accent: '#3b82f6',
     accentForeground: '#FFFFFF',
     border: 'rgba(255,255,255,0.08)',
-    ring: '#2563eb',
+    ring: '#3b82f6',
     sectionHeader: 'rgba(255,255,255,0.4)',
     userProfileBackground: '#1B254B',
   },
@@ -88,19 +88,19 @@ export const lightTheme = createTheme({
   palette: {
     mode: 'light',
     primary: {
-      main: 'hsl(222.2 47.4% 11.2%)',
-      contrastText: 'hsl(210 40% 98%)',
+      main: '#3b82f6',
+      contrastText:'#ffffff',
     },
     secondary: {
-      main: 'hsl(210 40% 96.1%)',
-      contrastText: 'hsl(222.2 47.4% 11.2%)',
+      main: '#3b82f6',
+      contrastText: '#ffffff',
     },
     background: {
-      default: 'hsl(0 0% 100%)',
-      paper: 'hsl(0 0% 100%)',
+      default: '#ffffff',
+      paper: '#ffffff',
     },
     text: {
-      primary: 'hsl(222.2 84% 4.9%)',
+      primary: '#000000',
     },
     divider: 'hsl(214.3 31.8% 91.4%)',
   },
@@ -111,19 +111,19 @@ export const darkTheme = createTheme({
   palette: {
     mode: 'dark',
     primary: {
-      main: 'hsl(210 40% 98%)',
-      contrastText: 'hsl(222.2 47.4% 11.2%)',
+      main: '#3b82f6',
+      contrastText: '#ffffff',
     },
     secondary: {
-      main: 'hsl(217.2 32.6% 17.5%)',
-      contrastText: 'hsl(210 40% 98%)',
+      main: '#3b82f6',
+      contrastText: '#ffffff',
     },
     background: {
-      default: 'hsl(222.2 84% 4.9%)',
-      paper: 'hsl(222.2 84% 4.9%)',
+      default: '#16213E',
+      paper: '#16213E',
     },
     text: {
-      primary: 'hsl(210 40% 98%)',
+      primary: '#ffffff',
     },
     divider: 'hsl(217.2 32.6% 17.5%)',
   },
