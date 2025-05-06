@@ -1,13 +1,22 @@
-import { Dashboard } from "@mui/icons-material";
 import { Route, Routes } from "react-router-dom";
-import Sidebar from "../modules/home/uiComponents/Sidebar";
+import AppLayout from "../layout/AppLayout";
+import Dashboard from "../modules/dashbaord/Dashboard";
+import LeadsOverview from "../modules/dashbaord/uiComponents/LeadsOverview";
 
 
 const AppRoutes = () => {
   return (
     <Routes>
-      <Route path="/" element={<Sidebar />}>
-        <Route path="/dashboard" element={<Dashboard />} />
+      <Route path="/" element={<AppLayout />}>
+        <Route index element={<Dashboard />} />
+        <Route path="leads" element={<LeadsOverview/>} />
+        <Route path="deals" element={<div>Deals Page</div>} />
+        <Route path="tasks" element={<div>Tasks Page</div>} />
+        <Route path="emails" element={<div>Emails Page</div>} />
+        <Route path="documents" element={<div>Documents Page</div>} />
+        <Route path="conversations" element={<div>Conversations Page</div>} />
+        <Route path="search" element={<div>Search Page</div>} />
+        <Route path="settings" element={<div>Settings Page</div>} />
       </Route>
     </Routes>
   );
