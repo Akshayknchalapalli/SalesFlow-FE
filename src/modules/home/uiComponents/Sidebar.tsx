@@ -121,6 +121,7 @@ const Sidebar = () => {
   const location = useLocation();
   const navigation = [
     { name: "Dashboard", href: "/", icon: BarChartIcon },
+    { name: "Contacts", href: "/contacts", icon: GroupIcon },
     { name: "Leads", href: "/leads", icon: GroupIcon },
     { name: "Deals", href: "/deals", icon: ShowChartIcon },
     { name: "Tasks", href: "/tasks", icon: CalendarTodayIcon },
