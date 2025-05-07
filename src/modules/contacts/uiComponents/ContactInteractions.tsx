@@ -23,6 +23,7 @@ interface ContactInteractionsProps {
 
 const TimelineItem = styled(Box)(({ theme }) => ({
   position: 'relative',
+  right: 12,
   paddingBottom: theme.spacing(3),
   '&:last-child': {
     paddingBottom: 0
@@ -114,16 +115,16 @@ const ContactInteractions: React.FC<ContactInteractionsProps> = ({ contactId }) 
       <CardContent>
         <Box sx={{ 
           position: 'relative',
-          pl: 3,
+          pl: 2,
           borderLeft: `1px solid ${theme.palette.divider}`
         }}>
-          {interactions.map((interaction, index) => (
+          {interactions.map((interaction) => (
             <TimelineItem key={interaction.id}>
               <InteractionIcon>
                 {getInteractionIcon(interaction.type)}
               </InteractionIcon>
               
-              <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+              <Box sx={{ display: 'flex', flexDirection: 'column', ml: 2 }}>
                 <Box sx={{ 
                   display: 'flex', 
                   justifyContent: 'space-between',

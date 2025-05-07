@@ -1,15 +1,17 @@
 import { Route, Routes } from "react-router-dom";
 import AppLayout from "../layout/AppLayout";
 import Dashboard from "../modules/dashbaord/Dashboard";
-import LeadsOverview from "../modules/dashbaord/uiComponents/LeadsOverview";
 import Contacts from "../modules/contacts/features/Contacts";
 import ContactDetail from "../modules/contacts/features/ContactDetail";
+import Leads from "../modules/leads/features/Leads";
+import LeadDetail from "../modules/leads/features/LeadDetail";
 const AppRoutes = () => {
   return (
     <Routes>
       <Route path="/" element={<AppLayout />}>
         <Route index element={<Dashboard />} />
-        <Route path="leads" element={<LeadsOverview/>} />
+        <Route path="leads" element={<Leads/>} />
+        <Route path="leads/:id" element={<LeadDetail/>} />
         <Route path="contacts" element={<Contacts/>} />
         <Route path="contacts/:id" element={<ContactDetail/>} />
         <Route path="deals" element={<div>Deals Page</div>} />

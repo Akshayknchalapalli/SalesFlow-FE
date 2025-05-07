@@ -130,6 +130,7 @@ const ContactsList: React.FC<ContactsListProps> = ({ filter }) => {
   const filteredContacts = filter === 'all' 
     ? mockContacts 
     : mockContacts.filter(contact => contact.stage === filter);
+  console.log('Filtered Contacts:', filteredContacts);
 
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -237,6 +238,19 @@ const ContactsList: React.FC<ContactsListProps> = ({ filter }) => {
                     open={open}
                     onClose={handleMenuClose}
                     onClick={(e) => e.stopPropagation()}
+                    anchorOrigin={{
+                      vertical: 'bottom',
+                      horizontal: 'right'
+                    }}
+                    transformOrigin={{
+                      vertical: 'top',
+                      horizontal: 'right'
+                    }}
+                    sx={{
+                      '& .MuiPaper-root': {
+                        boxShadow: theme.shadows[1]
+                      }
+                    }}
                   >
                     <MenuItem onClick={handleMenuClose}>
                       <EmailIcon sx={{ mr: 1, fontSize: 16 }} />
