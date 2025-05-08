@@ -16,13 +16,13 @@ import {
   Divider
 } from '@mui/material';
 import {
-  Description as PdfIcon,
-  InsertDriveFile as DocIcon,
-  Image as PptIcon,
-  TableChart as XlsIcon,
+  DescriptionOutlined as PdfIcon,
+  InsertDriveFileOutlined as DocIcon,
+  ImageOutlined as PptIcon,
+  TableChartOutlined as XlsIcon,
   Add as AddIcon,
-  Visibility as ViewIcon,
-  Download as DownloadIcon,
+  VisibilityOutlined as ViewIcon,
+  DownloadOutlined as DownloadIcon,
   MoreVert as MoreIcon
 } from '@mui/icons-material';
 
@@ -102,8 +102,13 @@ const LeadDocuments: React.FC<LeadDocumentsProps> = ({ leadId }) => {
   };
 
   return (
-    <Card sx={{ boxShadow: theme.shadows[1] }}>
-      <CardContent sx={{ p: 0 }}>
+    <Card sx={{ 
+      boxShadow: theme.card.boxShadow,
+      '& .MuiCardContent-root': {
+        p: 0
+      }
+    }}>
+      <CardContent>
         <Box sx={{ 
           p: 2, 
           display: 'flex', 
@@ -111,11 +116,17 @@ const LeadDocuments: React.FC<LeadDocumentsProps> = ({ leadId }) => {
           alignItems: 'center', 
           borderBottom: `1px solid ${theme.palette.divider}`
         }}>
-          <Typography variant="subtitle1">Documents</Typography>
+          <Typography variant="subtitle1" fontWeight={600}>Documents</Typography>
           <Button 
             variant="contained" 
             size="small"
             startIcon={<AddIcon />}
+            sx={{ 
+              textTransform: 'none',
+              '& .MuiSvgIcon-root': {
+                fontSize: '1.2rem'
+              }
+            }}
           >
             Upload
           </Button>
@@ -137,7 +148,7 @@ const LeadDocuments: React.FC<LeadDocumentsProps> = ({ leadId }) => {
                 
                 <ListItemText
                   primary={
-                    <Typography variant="body1" fontWeight="medium">
+                    <Typography variant="body1" fontWeight={600}>
                       {document.name}
                     </Typography>
                   }
@@ -182,6 +193,12 @@ const LeadDocuments: React.FC<LeadDocumentsProps> = ({ leadId }) => {
                     transformOrigin={{
                       vertical: 'top',
                       horizontal: 'right'
+                    }}
+                    PaperProps={{
+                      sx: {
+                        boxShadow: 'none',
+                        border: `1px solid ${theme.palette.divider}`
+                      }
                     }}
                   >
                     <MenuItem onClick={handleMenuClose}>Rename</MenuItem>

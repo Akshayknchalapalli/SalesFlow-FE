@@ -1,4 +1,3 @@
-
 import { Link, useLocation } from "react-router-dom";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import GroupIcon from "@mui/icons-material/Group";
@@ -133,6 +132,14 @@ const Sidebar = () => {
     { name: "Search", href: "/search", icon: SearchIcon },
     { name: "Settings", href: "/settings", icon: SettingsIcon },
   ];
+
+  const isActive = (href: string) => {
+    if (href === '/') {
+      return location.pathname === '/';
+    }
+    return location.pathname.startsWith(href);
+  };
+
   return (
     <SidebarContainer>
       <Box>
@@ -146,7 +153,7 @@ const Sidebar = () => {
             <NavItem
               key={item.name}
               to={item.href}
-              active={location.pathname === item.href}
+              active={isActive(item.href)}
             >
               <NavIcon as={item.icon} />
               {item.name}
@@ -159,7 +166,7 @@ const Sidebar = () => {
             <NavItem
               key={item.name}
               to={item.href}
-              active={location.pathname === item.href}
+              active={isActive(item.href)}
             >
               <NavIcon as={item.icon} />
               {item.name}

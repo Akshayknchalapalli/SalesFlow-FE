@@ -12,10 +12,10 @@ import {
   useTheme 
 } from '@mui/material';
 import {
-  Email as EmailIcon,
-  Phone as PhoneIcon,
-  CalendarToday as CalendarIcon,
-  Comment as CommentIcon,
+  EmailOutlined as EmailIcon,
+  PhoneOutlined as PhoneIcon,
+  CalendarTodayOutlined as CalendarIcon,
+  CommentOutlined as CommentIcon,
   Add as AddIcon,
   MoreVert as MoreVertIcon
 } from '@mui/icons-material';
@@ -110,8 +110,13 @@ const LeadInteractionHistory: React.FC<LeadInteractionHistoryProps> = ({ leadId 
   };
 
   return (
-    <Card sx={{ boxShadow: theme.shadows[1] }}>
-      <CardContent sx={{ p: 0 }}>
+    <Card sx={{ 
+      boxShadow: theme.card.boxShadow,
+      '& .MuiCardContent-root': {
+        p: 0
+      }
+    }}>
+      <CardContent>
         <Box sx={{ 
           p: 2, 
           display: 'flex', 
@@ -119,11 +124,17 @@ const LeadInteractionHistory: React.FC<LeadInteractionHistoryProps> = ({ leadId 
           alignItems: 'center', 
           borderBottom: `1px solid ${theme.palette.divider}`
         }}>
-          <Typography variant="subtitle1">Interaction History</Typography>
+          <Typography variant="subtitle1" fontWeight={600}>Interaction History</Typography>
           <Button 
             variant="contained" 
             size="small"
             startIcon={<AddIcon />}
+            sx={{ 
+              textTransform: 'none',
+              '& .MuiSvgIcon-root': {
+                fontSize: '1.2rem'
+              }
+            }}
           >
             Add Interaction
           </Button>
@@ -163,7 +174,7 @@ const LeadInteractionHistory: React.FC<LeadInteractionHistoryProps> = ({ leadId 
               <Box sx={{ ml: 4, flexGrow: 1 }}>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                   <Box>
-                    <Typography variant="body2" fontWeight="medium">
+                    <Typography variant="body2" fontWeight={600}>
                       {interaction.title}
                     </Typography>
                     <Typography variant="caption" color="text.secondary">
@@ -188,6 +199,12 @@ const LeadInteractionHistory: React.FC<LeadInteractionHistoryProps> = ({ leadId 
                       vertical: 'top',
                       horizontal: 'right'
                     }}
+                    PaperProps={{
+                      sx: {
+                        boxShadow: 'none',
+                        border: `1px solid ${theme.palette.divider}`
+                      }
+                    }}
                   >
                     <MenuItem onClick={handleMenuClose}>Edit</MenuItem>
                     <MenuItem onClick={handleMenuClose} sx={{ color: 'error.main' }}>
@@ -196,7 +213,7 @@ const LeadInteractionHistory: React.FC<LeadInteractionHistoryProps> = ({ leadId 
                   </Menu>
                 </Box>
                 
-                <Typography variant="body2" sx={{ mt: 1 }}>
+                <Typography variant="body2" sx={{ mt: 1, color: 'text.secondary' }}>
                   {interaction.content}
                 </Typography>
                 
@@ -205,12 +222,12 @@ const LeadInteractionHistory: React.FC<LeadInteractionHistoryProps> = ({ leadId 
                     width: 24, 
                     height: 24, 
                     fontSize: '0.75rem',
-                    bgcolor: theme.palette.grey[200],
+                    bgcolor: theme.palette.grey[100],
                     color: theme.palette.text.primary
                   }}>
                     {interaction.user.avatar}
                   </Avatar>
-                  <Typography variant="caption" sx={{ ml: 1 }}>
+                  <Typography variant="caption" sx={{ ml: 1, color: 'text.secondary' }}>
                     {interaction.user.name}
                   </Typography>
                 </Box>

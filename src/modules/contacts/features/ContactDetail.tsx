@@ -6,12 +6,12 @@ import {
   Tab, 
   Box, 
   Typography, 
-  Grid, 
   Card, 
   CardContent, 
   Chip,
   useTheme 
 } from '@mui/material';
+import Grid from '@mui/material/GridLegacy';
 import {
   ArrowBack as ArrowBackIcon,
   Email as EmailIcon,
@@ -37,7 +37,7 @@ const ContactDetail = () => {
   const title = isNewContact ? "Add New Contact" : "Contact Details";
 
   return (
-    <Box>
+    <Box sx={{ p: 3 }}>
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 4 }}>
         <Button 
           variant="text" 
@@ -63,6 +63,20 @@ const ContactDetail = () => {
                 onChange={(e, newValue) => setTabValue(newValue)}
                 indicatorColor="primary"
                 textColor="primary"
+                sx={{
+                  backgroundColor: theme.palette.grey[100],
+                  borderRadius: 1,
+                  px: 2,
+                  width: 'fit-content',
+                  '& .MuiTab-root': {
+                    textTransform: 'none',
+                    fontWeight: 500,
+                    minHeight: 48,
+                    '&.Mui-selected': {
+                      fontWeight: 600,
+                    }
+                  }
+                }}
               >
                 <Tab label="Communication History" value="interactions" />
                 <Tab label="Associated Deals" value="deals" />
@@ -156,16 +170,12 @@ const ContactDetail = () => {
                       label={tag}
                       size="small"
                       sx={{
-                        bgcolor: [
-                          theme.palette.primary.light,
-                          theme.palette.success.light,
-                          theme.palette.secondary.light
-                        ][index],
-                        color: [
-                          theme.palette.primary.dark,
-                          theme.palette.success.dark,
-                          theme.palette.secondary.dark
-                        ][index]
+                        backgroundColor: theme.status[['prospect', 'customer', 'partner'][index] as keyof typeof theme.status]?.bg || theme.status.default.bg,
+                        color: theme.status[['prospect', 'customer', 'partner'][index] as keyof typeof theme.status]?.color || theme.status.default.color,
+                        fontWeight: 500,
+                        '& .MuiChip-label': {
+                          color: theme.status[['prospect', 'customer', 'partner'][index] as keyof typeof theme.status]?.color || theme.status.default.color
+                        }
                       }}
                     />
                   ))}

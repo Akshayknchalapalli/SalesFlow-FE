@@ -7,8 +7,9 @@ const AppLayout = () => {
   const theme = useTheme();
   // Use theme.sidebar.width for sidebar width (set in theme.ts, fallback to 260 if not set)
   const sidebarWidth = theme.sidebar.width || 260;
+  const headerHeight = 64; // Adjust if your header is a different height
   return (
-    <Box display="flex" minHeight="100vh" position="relative">
+    <Box>
       {/* Fixed Sidebar */}
       <Box
         sx={{
@@ -17,46 +18,39 @@ const AppLayout = () => {
           top: 0,
           bottom: 0,
           zIndex: 1200,
-          width: sidebarWidth,
         }}
       >
         <Sidebar />
       </Box>
-      {/* Main Content Area */}
+      {/* Fixed Header */}
       <Box
-        flex={1}
-        bgcolor="#f8fafc"
         sx={{
-          marginLeft: sidebarWidth,
-          width: `calc(100% - ${sidebarWidth}px)`,
-          minHeight: '100vh',
+          position: 'fixed',
+          top: 0,
+          left: sidebarWidth,
+          right: 0,
+          zIndex: 1100,
+          backgroundColor: '#f8fafc',
+          height: `${headerHeight}px`,
         }}
       >
-        {/* Fixed Header */}
-        <Box
-          sx={{
-            position: 'fixed',
-            top: 0,
-            right: 0,
-            left: sidebarWidth,
-            zIndex: 1100,
-            backgroundColor: '#f8fafc',
-          }}
-        >
-          <Header />
-        </Box>
-        {/* Scrollable Content */}
-        <Box
-          sx={{
-            marginTop: '64px', // Adjust this value based on your header height
-            p: 3,
-            minHeight: 'calc(100vh - 64px)', // Subtract header height
-            overflow: 'auto',
-          }}
-        >
-          <Box sx={{ background: 'yellow', height: 100, marginBottom: 16 }}>TEST BOX</Box>
-          {/* <Outlet /> */}
-        </Box>
+        <Header />
+      </Box>
+      {/* Main Content Area */}
+      <Box
+        sx={{
+          position: 'absolute',
+          top: 0,
+          left: sidebarWidth,
+          width: `calc(100vw - ${sidebarWidth}px)`,
+          marginTop: `${headerHeight}px`,
+          // background: 'yellow',
+          // height: 300,
+          zIndex: 1,
+        }}
+      >
+        {/* MAIN CONTENT TEST */}
+        <Outlet />
       </Box>
     </Box>
   );

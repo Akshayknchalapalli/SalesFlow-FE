@@ -7,9 +7,8 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Paper,
-  Button,
   Checkbox,
+  Button,
   Chip,
   IconButton,
   Menu,
@@ -19,13 +18,13 @@ import {
   useTheme
 } from '@mui/material';
 import {
-  Email as EmailIcon,
-  Phone as PhoneIcon,
+  EmailOutlined as EmailIcon,
+  PhoneOutlined as PhoneIcon,
   MoreVert as MoreVertIcon,
-  CalendarToday as CalendarIcon,
-  PersonAdd as UserPlusIcon,
-  LocalOffer as TagIcon,
-  Delete as TrashIcon
+  CalendarTodayOutlined as CalendarIcon,
+  PersonAddOutlined as UserPlusIcon,
+  LocalOfferOutlined as TagIcon,
+  DeleteOutlined as DeleteIcon
 } from '@mui/icons-material';
 
 const mockLeads = [
@@ -98,23 +97,27 @@ const mockLeads = [
 
 const StatusChip = ({ status }: { status: string }) => {
   const theme = useTheme();
-  const statusConfig = {
-    new: { label: 'New', color: 'primary' },
-    contacted: { label: 'Contacted', color: 'warning' },
-    qualified: { label: 'Qualified', color: 'success' },
-    lost: { label: 'Lost', color: 'error' },
+  const statusConfig: Record<string, { label: string, status: 'prospect' | 'customer' | 'partner' | 'error' }> = {
+    new: { label: 'New', status: 'prospect' },
+    contacted: { label: 'Contacted', status: 'partner' },
+    qualified: { label: 'Qualified', status: 'customer' },
+    lost: { label: 'Lost', status: 'error' }
   };
   
-  const config = statusConfig[status as keyof typeof statusConfig] || statusConfig.new;
-  
+  const config = statusConfig[status] || statusConfig.new;
+  const statusType = config?.status ?? 'prospect';
+
   return (
     <Chip
-      label={config.label}
+      label={config?.label}
       size="small"
       sx={{
-        backgroundColor: theme.palette.background.paper,
-        color: theme.palette.text.primary,
-        '&:hover': { backgroundColor: theme.palette.action.hover }
+        backgroundColor: statusType === 'error' ? '#FEE2E2' : theme.status[statusType].bg,
+        color: statusType === 'error' ? theme.palette.error.main : theme.status[statusType].color,
+        fontWeight: 500,
+        '& .MuiChip-label': {
+          color: statusType === 'error' ? theme.palette.error.main : theme.status[statusType].color
+        }
       }}
     />
   );
@@ -145,22 +148,29 @@ const LeadsList: React.FC<LeadsListProps> = ({ filter }) => {
   };
 
   return (
-    <Paper sx={{ overflow: 'hidden' }}>
+    <Box sx={{ 
+      backgroundColor: theme.palette.background.paper, 
+      boxShadow: theme.card.boxShadow,
+      overflow: 'hidden'
+    }}>
       <Box sx={{ p: 2, borderBottom: `1px solid ${theme.palette.divider}` }}>
-        <Box sx={{ 
-          display: 'flex', 
-          justifyContent: 'space-between', 
-          alignItems: 'center', 
-          mb: 2 
-        }}>
-          <Typography variant="subtitle1" fontWeight="medium">
-            Leads
-          </Typography>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
+          <Typography variant="body1" fontWeight="medium">Leads</Typography>
           <Box sx={{ display: 'flex', gap: 1 }}>
-            <Button variant="outlined" startIcon={<TagIcon />}>
+            <Button 
+              variant="outlined" 
+              size="small" 
+              startIcon={<TagIcon />}
+              sx={{ textTransform: 'none' }}
+            >
               Filter
             </Button>
-            <Button variant="outlined" startIcon={<UserPlusIcon />}>
+            <Button 
+              variant="outlined" 
+              size="small" 
+              startIcon={<UserPlusIcon />}
+              sx={{ textTransform: 'none' }}
+            >
               Import
             </Button>
           </Box>
@@ -171,19 +181,17 @@ const LeadsList: React.FC<LeadsListProps> = ({ filter }) => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell padding="checkbox">
-                <Checkbox />
-              </TableCell>
-              <TableCell>Name</TableCell>
-              <TableCell>Company</TableCell>
-              <TableCell>Source</TableCell>
-              <TableCell>Status</TableCell>
-              <TableCell>Contact Info</TableCell>
-              <TableCell>Lead Score</TableCell>
-              <TableCell>Assigned To</TableCell>
-              <TableCell>Last Contacted</TableCell>
-              <TableCell>Next Action</TableCell>
-              <TableCell>Actions</TableCell>
+              <TableCell padding="checkbox"><Checkbox /></TableCell>
+              <TableCell><Typography variant="body2" fontWeight={600} color="text.secondary">Name</Typography></TableCell>
+              <TableCell><Typography variant="body2" fontWeight={600} color="text.secondary">Company</Typography></TableCell>
+              <TableCell><Typography variant="body2" fontWeight={600} color="text.secondary">Source</Typography></TableCell>
+              <TableCell><Typography variant="body2" fontWeight={600} color="text.secondary">Status</Typography></TableCell>
+              <TableCell><Typography variant="body2" fontWeight={600} color="text.secondary">Contact Info</Typography></TableCell>
+              <TableCell><Typography variant="body2" fontWeight={600} color="text.secondary">Lead Score</Typography></TableCell>
+              <TableCell><Typography variant="body2" fontWeight={600} color="text.secondary">Assigned To</Typography></TableCell>
+              <TableCell><Typography variant="body2" fontWeight={600} color="text.secondary">Last Contacted</Typography></TableCell>
+              <TableCell><Typography variant="body2" fontWeight={600} color="text.secondary">Next Action</Typography></TableCell>
+              <TableCell><Typography variant="body2" fontWeight={600} color="text.secondary">Actions</Typography></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -191,62 +199,78 @@ const LeadsList: React.FC<LeadsListProps> = ({ filter }) => {
               <TableRow 
                 key={lead.id} 
                 hover 
-                sx={{ '&:hover': { backgroundColor: 'action.hover' } }}
+                sx={{ '&:hover': { backgroundColor: 'action.hover' }, cursor: 'pointer' }}
               >
-                <TableCell padding="checkbox">
-                  <Checkbox />
-                </TableCell>
+                <TableCell padding="checkbox"><Checkbox /></TableCell>
+                
                 <TableCell onClick={() => navigate(`/leads/${lead.id}`)}>
                   <Typography fontWeight="medium">{lead.name}</Typography>
                 </TableCell>
+
                 <TableCell onClick={() => navigate(`/leads/${lead.id}`)}>
                   {lead.company}
                 </TableCell>
+
                 <TableCell onClick={() => navigate(`/leads/${lead.id}`)}>
                   {lead.source}
                 </TableCell>
+
                 <TableCell onClick={() => navigate(`/leads/${lead.id}`)}>
                   <StatusChip status={lead.status} />
                 </TableCell>
+
                 <TableCell onClick={() => navigate(`/leads/${lead.id}`)}>
                   <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                      <EmailIcon fontSize="small" />
+                      <EmailIcon sx={{ fontSize: 14, color: theme.palette.text.secondary }} />
                       <Typography variant="body2">{lead.email}</Typography>
                     </Box>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                      <PhoneIcon fontSize="small" />
+                      <PhoneIcon sx={{ fontSize: 14, color: theme.palette.text.secondary }} />
                       <Typography variant="body2">{lead.phone}</Typography>
                     </Box>
                   </Box>
                 </TableCell>
+
                 <TableCell onClick={() => navigate(`/leads/${lead.id}`)}>
                   <Chip
                     label={lead.score}
                     size="small"
-                    sx={{ bgcolor: 'grey.100', color: 'text.primary' }}
+                    sx={{
+                      bgcolor: theme.palette.grey[200],
+                      color: theme.palette.text.secondary,
+                      fontWeight: 500
+                    }}
                   />
                 </TableCell>
+
                 <TableCell onClick={() => navigate(`/leads/${lead.id}`)}>
                   {lead.assignedTo}
                 </TableCell>
+
                 <TableCell onClick={() => navigate(`/leads/${lead.id}`)}>
                   {lead.lastContacted}
                 </TableCell>
+
                 <TableCell onClick={() => navigate(`/leads/${lead.id}`)}>
                   {lead.nextAction}
                 </TableCell>
+
                 <TableCell>
                   <IconButton
-                    onClick={(e) => handleMenuOpen(e, lead.id)}
                     size="small"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleMenuOpen(e, lead.id);
+                    }}
                   >
-                    <MoreVertIcon />
+                    <MoreVertIcon fontSize="small" />
                   </IconButton>
                   <Menu
                     anchorEl={anchorEl}
                     open={openId === lead.id}
                     onClose={handleMenuClose}
+                    onClick={(e) => e.stopPropagation()}
                     anchorOrigin={{
                       vertical: 'bottom',
                       horizontal: 'right'
@@ -255,7 +279,17 @@ const LeadsList: React.FC<LeadsListProps> = ({ filter }) => {
                       vertical: 'top',
                       horizontal: 'right'
                     }}
+                    PaperProps={{
+                      sx: {
+                        boxShadow: 'none',
+                        border: `1px solid ${theme.palette.divider}`
+                      }
+                    }}
                   >
+                    <MenuItem onClick={handleMenuClose}>
+                      <CalendarIcon fontSize="small" sx={{ mr: 1 }} />
+                      Schedule Meeting
+                    </MenuItem>
                     <MenuItem onClick={handleMenuClose}>
                       <EmailIcon fontSize="small" sx={{ mr: 1 }} />
                       Send Email
@@ -264,13 +298,9 @@ const LeadsList: React.FC<LeadsListProps> = ({ filter }) => {
                       <PhoneIcon fontSize="small" sx={{ mr: 1 }} />
                       Call
                     </MenuItem>
-                    <MenuItem onClick={handleMenuClose}>
-                      <CalendarIcon fontSize="small" sx={{ mr: 1 }} />
-                      Schedule Task
-                    </MenuItem>
                     <MenuItem onClick={handleMenuClose} sx={{ color: 'error.main' }}>
-                      <TrashIcon fontSize="small" sx={{ mr: 1 }} />
-                      Delete
+                      <DeleteIcon fontSize="small" sx={{ mr: 1 }} />
+                      Delete Lead
                     </MenuItem>
                   </Menu>
                 </TableCell>
@@ -279,7 +309,7 @@ const LeadsList: React.FC<LeadsListProps> = ({ filter }) => {
           </TableBody>
         </Table>
       </TableContainer>
-    </Paper>
+    </Box>
   );
 };
 

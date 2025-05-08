@@ -18,14 +18,14 @@ import {
   useTheme
 } from '@mui/material';
 import {
-  Email as EmailIcon,
-  Phone as PhoneIcon,
-  Link as LinkIcon,
-  CalendarToday as CalendarIcon,
+  EmailOutlined as EmailIcon,
+  PhoneOutlined as PhoneIcon,
+  LinkOutlined as LinkIcon,
+  CalendarTodayOutlined as CalendarIcon,
   MoreVert as MoreVertIcon,
-  LocalOffer as TagIcon,
-  InsertDriveFile as FileIcon,
-  Delete as DeleteIcon
+  LocalOfferOutlined as TagIcon,
+  InsertDriveFileOutlined as FileIcon,
+  DeleteOutlined as DeleteIcon
 } from '@mui/icons-material';
 
 const mockContacts = [
@@ -86,31 +86,27 @@ const mockContacts = [
     },
   ];
 
-  type PaletteColorKeys = 'primary' | 'secondary' | 'success' | 'error' | 'warning' | 'info';
-
   const StageChip = ({ stage }: { stage: string }) => {
     const theme = useTheme();
     
-    // Define stage config with type safety
-    const stageConfig: Record<string, { label: string; color: PaletteColorKeys }> = {
-      prospect: { label: 'Prospect', color: 'primary' },
-      customer: { label: 'Customer', color: 'success' },
-      partner: { label: 'Partner', color: 'secondary' },
+    const stageConfig: Record<string, { label: string }> = {
+      prospect: { label: 'Prospect' },
+      customer: { label: 'Customer' },
+      partner: { label: 'Partner' },
     };
   
-    // Get config with fallback
     const config = stageConfig[stage as keyof typeof stageConfig] || stageConfig.prospect;
   
     return (
       <Chip
         label={config?.label}
-        variant="outlined"
+        size="small"
         sx={{
-          backgroundColor: theme.palette[config?.color || 'primary'].light,
-          borderColor: theme.palette[config?.color || 'primary'].main,
-          color: theme.palette[config?.color || 'primary'].dark,
+          backgroundColor: theme.status[stage as keyof typeof theme.status]?.bg || theme.status.default.bg,
+          color: theme.status[stage as keyof typeof theme.status]?.color || theme.status.default.color,
+          fontWeight: 500,
           '& .MuiChip-label': {
-            color: theme.palette[config?.color || 'primary'].dark
+            color: theme.status[stage as keyof typeof theme.status]?.color || theme.status.default.color
           }
         }}
       />
@@ -130,7 +126,6 @@ const ContactsList: React.FC<ContactsListProps> = ({ filter }) => {
   const filteredContacts = filter === 'all' 
     ? mockContacts 
     : mockContacts.filter(contact => contact.stage === filter);
-  console.log('Filtered Contacts:', filteredContacts);
 
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -142,19 +137,29 @@ const ContactsList: React.FC<ContactsListProps> = ({ filter }) => {
 
   return (
     <Box sx={{ 
-      backgroundColor: 'background.paper', 
-      borderRadius: 2, 
-      border: `1px solid ${theme.palette.divider}`,
+      backgroundColor: theme.palette.background.paper, 
+      // borderRadius: theme.shape.borderRadius,
+      boxShadow: theme.card.boxShadow,
       overflow: 'hidden'
     }}>
       <Box sx={{ p: 2, borderBottom: `1px solid ${theme.palette.divider}` }}>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
           <Typography variant="body1" fontWeight="medium">Contacts</Typography>
           <Box sx={{ display: 'flex', gap: 1 }}>
-            <Button variant="outlined" size="small" startIcon={<TagIcon />}>
+            <Button 
+              variant="outlined" 
+              size="small" 
+              startIcon={<TagIcon />}
+              sx={{ textTransform: 'none' }}
+            >
               Filter
             </Button>
-            <Button variant="outlined" size="small" startIcon={<FileIcon />}>
+            <Button 
+              variant="outlined" 
+              size="small" 
+              startIcon={<FileIcon />}
+              sx={{ textTransform: 'none' }}
+            >
               Import
             </Button>
           </Box>
@@ -166,13 +171,13 @@ const ContactsList: React.FC<ContactsListProps> = ({ filter }) => {
           <TableHead>
             <TableRow>
               <TableCell padding="checkbox"><Checkbox /></TableCell>
-              <TableCell><Typography variant="body2" fontWeight="medium">Name</Typography></TableCell>
-              <TableCell><Typography variant="body2" fontWeight="medium">Title/Company</Typography></TableCell>
-              <TableCell><Typography variant="body2" fontWeight="medium">Relationship</Typography></TableCell>
-              <TableCell><Typography variant="body2" fontWeight="medium">Contact Info</Typography></TableCell>
-              <TableCell><Typography variant="body2" fontWeight="medium">Last Contact</Typography></TableCell>
-              <TableCell><Typography variant="body2" fontWeight="medium">Associated Deals</Typography></TableCell>
-              <TableCell><Typography variant="body2" fontWeight="medium">Actions</Typography></TableCell>
+              <TableCell><Typography variant="body2" fontWeight={600} color="text.secondary">Name</Typography></TableCell>
+              <TableCell><Typography variant="body2" fontWeight={600} color="text.secondary">Title/Company</Typography></TableCell>
+              <TableCell><Typography variant="body2" fontWeight={600} color="text.secondary">Relationship</Typography></TableCell>
+              <TableCell><Typography variant="body2" fontWeight={600} color="text.secondary">Contact Info</Typography></TableCell>
+              <TableCell><Typography variant="body2" fontWeight={600} color="text.secondary">Last Contact</Typography></TableCell>
+              <TableCell><Typography variant="body2" fontWeight={600} color="text.secondary">Associated Deals</Typography></TableCell>
+              <TableCell><Typography variant="body2" fontWeight={600} color="text.secondary">Actions</Typography></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -202,11 +207,11 @@ const ContactsList: React.FC<ContactsListProps> = ({ filter }) => {
                 <TableCell onClick={() => navigate(`/contacts/${contact.id}`)}>
                   <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                      <EmailIcon sx={{ fontSize: 14 }} />
+                      <EmailIcon sx={{ fontSize: 14, color: theme.palette.text.secondary }} />
                       <Typography variant="body2">{contact.email}</Typography>
                     </Box>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                      <PhoneIcon sx={{ fontSize: 14 }} />
+                      <PhoneIcon sx={{ fontSize: 14, color: theme.palette.text.secondary }} />
                       <Typography variant="body2">{contact.phone}</Typography>
                     </Box>
                   </Box>
@@ -218,7 +223,7 @@ const ContactsList: React.FC<ContactsListProps> = ({ filter }) => {
 
                 <TableCell onClick={() => navigate(`/contacts/${contact.id}`)}>
                   <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                    <LinkIcon color="primary" sx={{ fontSize: 14 }} />
+                    <LinkIcon sx={{ fontSize: 14, color: theme.palette.primary.main }} />
                     <Typography variant="body2">{contact.deals} deals</Typography>
                   </Box>
                 </TableCell>
@@ -246,31 +251,32 @@ const ContactsList: React.FC<ContactsListProps> = ({ filter }) => {
                       vertical: 'top',
                       horizontal: 'right'
                     }}
-                    sx={{
-                      '& .MuiPaper-root': {
-                        boxShadow: theme.shadows[1]
+                    PaperProps={{
+                      sx: {
+                        boxShadow: 'none',
+                        border: `1px solid ${theme.palette.divider}`
                       }
                     }}
                   >
                     <MenuItem onClick={handleMenuClose}>
-                      <EmailIcon sx={{ mr: 1, fontSize: 16 }} />
-                      Send Email
-                    </MenuItem>
-                    <MenuItem onClick={handleMenuClose}>
-                      <PhoneIcon sx={{ mr: 1, fontSize: 16 }} />
-                      Call
-                    </MenuItem>
-                    <MenuItem onClick={handleMenuClose}>
-                      <CalendarIcon sx={{ mr: 1, fontSize: 16 }} />
+                      <CalendarIcon fontSize="small" sx={{ mr: 1 }} />
                       Schedule Meeting
                     </MenuItem>
                     <MenuItem onClick={handleMenuClose}>
-                      <LinkIcon sx={{ mr: 1, fontSize: 16 }} />
-                      Link to Deal
+                      <EmailIcon fontSize="small" sx={{ mr: 1 }} />
+                      Send Email
+                    </MenuItem>
+                    <MenuItem onClick={handleMenuClose}>
+                      <PhoneIcon fontSize="small" sx={{ mr: 1 }} />
+                      Call
+                    </MenuItem>
+                    <MenuItem onClick={handleMenuClose}>
+                      <LinkIcon fontSize="small" sx={{ mr: 1 }} />
+                      Link a Deal
                     </MenuItem>
                     <MenuItem onClick={handleMenuClose} sx={{ color: 'error.main' }}>
-                      <DeleteIcon sx={{ mr: 1, fontSize: 16 }} />
-                      Delete
+                      <DeleteIcon fontSize="small" sx={{ mr: 1 }} />
+                      Delete Contact
                     </MenuItem>
                   </Menu>
                 </TableCell>

@@ -14,9 +14,10 @@ import {
   Select, 
   MenuItem, 
   FormHelperText, 
-  Grid, 
-  Box 
+  Box,
+  useTheme
 } from '@mui/material';
+import Grid from '@mui/material/GridLegacy';
 import { toast } from "sonner";
 import { useNavigate } from 'react-router-dom';
 
@@ -55,6 +56,7 @@ const mockLead = {
 
 const LeadContactInfo: React.FC<LeadContactInfoProps> = ({ isNew, leadId }) => {
   const navigate = useNavigate();
+  const theme = useTheme();
   
   const { 
     control,
@@ -78,22 +80,28 @@ const LeadContactInfo: React.FC<LeadContactInfoProps> = ({ isNew, leadId }) => {
 
   const onSubmit = (data: FormValues) => {
     console.log("Form submitted:", data);
-    toast.success(isNew ? "Contact created successfully" : "Contact updated successfully");
+    toast.success(isNew ? "Lead created successfully" : "Lead updated successfully");
     if (isNew) navigate("/leads");
   };
 
   return (
-    <Card sx={{ boxShadow: 3 }}>
+    <Card sx={{ 
+      boxShadow: theme.card.boxShadow,
+      '& .MuiCardContent-root': {
+        p: 3
+      }
+    }}>
       <CardHeader 
         title={
-          <Typography variant="h5">
-            {isNew ? "Add New Contact" : "Contact Information"}
+          <Typography variant="h5" fontWeight={600}>
+            {isNew ? "Add New Lead" : "Lead Information"}
           </Typography>
         }
+        sx={{ px: 3, pt: 3, pb: 0 }}
       />
       <Box component="form" onSubmit={handleSubmit(onSubmit)}>
-        <CardContent sx={{ display: 'grid', gap: 3 }}>
-          <Grid container spacing={2}>
+        <CardContent>
+          <Grid container spacing={3}>
             {/* First Name */}
             <Grid item xs={12} md={6}>
               <FormControl fullWidth error={!!errors.firstName}>
@@ -102,6 +110,7 @@ const LeadContactInfo: React.FC<LeadContactInfoProps> = ({ isNew, leadId }) => {
                   {...register('firstName')}
                   error={!!errors.firstName}
                   helperText={errors.firstName?.message}
+                  size="small"
                 />
               </FormControl>
             </Grid>
@@ -114,6 +123,7 @@ const LeadContactInfo: React.FC<LeadContactInfoProps> = ({ isNew, leadId }) => {
                   {...register('lastName')}
                   error={!!errors.lastName}
                   helperText={errors.lastName?.message}
+                  size="small"
                 />
               </FormControl>
             </Grid>
@@ -127,6 +137,7 @@ const LeadContactInfo: React.FC<LeadContactInfoProps> = ({ isNew, leadId }) => {
                   {...register('email')}
                   error={!!errors.email}
                   helperText={errors.email?.message}
+                  size="small"
                 />
               </FormControl>
             </Grid>
@@ -139,6 +150,7 @@ const LeadContactInfo: React.FC<LeadContactInfoProps> = ({ isNew, leadId }) => {
                   {...register('phone')}
                   error={!!errors.phone}
                   helperText={errors.phone?.message}
+                  size="small"
                 />
               </FormControl>
             </Grid>
@@ -151,6 +163,7 @@ const LeadContactInfo: React.FC<LeadContactInfoProps> = ({ isNew, leadId }) => {
                   {...register('company')}
                   error={!!errors.company}
                   helperText={errors.company?.message}
+                  size="small"
                 />
               </FormControl>
             </Grid>
@@ -163,13 +176,14 @@ const LeadContactInfo: React.FC<LeadContactInfoProps> = ({ isNew, leadId }) => {
                   {...register('position')}
                   error={!!errors.position}
                   helperText={errors.position?.message}
+                  size="small"
                 />
               </FormControl>
             </Grid>
 
             {/* Status */}
             <Grid item xs={12} md={6}>
-              <FormControl fullWidth error={!!errors.status}>
+              <FormControl fullWidth error={!!errors.status} size="small">
                 <InputLabel>Status</InputLabel>
                 <Select
                   label="Status"
@@ -188,7 +202,7 @@ const LeadContactInfo: React.FC<LeadContactInfoProps> = ({ isNew, leadId }) => {
 
             {/* Source */}
             <Grid item xs={12} md={6}>
-              <FormControl fullWidth error={!!errors.source}>
+              <FormControl fullWidth error={!!errors.source} size="small">
                 <InputLabel>Source</InputLabel>
                 <Select
                   label="Source"
@@ -217,24 +231,27 @@ const LeadContactInfo: React.FC<LeadContactInfoProps> = ({ isNew, leadId }) => {
                   {...register('notes')}
                   error={!!errors.notes}
                   helperText={errors.notes?.message}
+                  size="small"
                 />
               </FormControl>
             </Grid>
           </Grid>
         </CardContent>
 
-        <Box sx={{ p: 2, display: 'flex', justifyContent: 'flex-end', gap: 2 }}>
+        <Box sx={{ p: 3, display: 'flex', justifyContent: 'flex-end', gap: 2, borderTop: `1px solid ${theme.palette.divider}` }}>
           <Button 
             variant="outlined" 
             onClick={() => navigate('/leads')}
+            sx={{ textTransform: 'none' }}
           >
             Cancel
           </Button>
           <Button 
             type="submit" 
             variant="contained"
+            sx={{ textTransform: 'none' }}
           >
-            {isNew ? "Create Contact" : "Update Contact"}
+            {isNew ? "Create Lead" : "Update Lead"}
           </Button>
         </Box>
       </Box>

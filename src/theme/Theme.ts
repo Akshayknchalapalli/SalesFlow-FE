@@ -1,4 +1,3 @@
-
 // --- THEME EXTENSIONS ---
 // Extend MUI theme with custom properties for your app's design system
 // Use these theme values in all your components for consistency
@@ -40,6 +39,9 @@ declare module '@mui/material/styles' {
       atRisk: { bg: string; color: string }; // Use for 'At Risk' status
       won: { bg: string; color: string }; // Use for 'Won' status
       default: { bg: string; color: string }; // Use for other/default statuses
+      prospect: { bg: string; color: string }; // Blue for prospects
+      customer: { bg: string; color: string }; // Green for customers
+      partner: { bg: string; color: string }; // Orange for partners
     };
     // Icon backgrounds (for stat cards, etc.)
     icon: {
@@ -105,6 +107,9 @@ const baseTheme: ThemeOptions = {
     atRisk: { bg: 'rgba(239,68,68,0.12)', color: '#EF4444' }, // Soft red bg, red text
     won: { bg: 'rgba(59,130,246,0.12)', color: '#3B82F6' }, // Soft blue bg, blue text
     default: { bg: '#F3F4F6', color: '#6B7280' }, // Light gray bg, gray text
+    prospect: { bg: 'rgba(59,130,246,0.12)', color: '#3B82F6' }, // Blue for prospects
+    customer: { bg: 'rgba(34,197,94,0.12)', color: '#22C55E' }, // Green for customers
+    partner: { bg: 'rgba(245,158,11,0.12)', color: '#F59E0B' }, // Orange for partners
   },
   icon: {
     statCardBg: 'transparent', // Use for stat card icon background (transparent by default)
@@ -125,7 +130,7 @@ export const lightTheme = createTheme({
       contrastText: '#ffffff',
     },
     background: {
-      default: '#ffffff',
+      default: '#F8FAFF', // Even lighter blue background
       paper: '#ffffff',
     },
     text: {

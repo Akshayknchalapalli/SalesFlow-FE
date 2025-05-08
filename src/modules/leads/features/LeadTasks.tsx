@@ -15,13 +15,13 @@ import {
   useTheme
 } from '@mui/material';
 import {
-  Phone as PhoneIcon,
-  Email as EmailIcon,
-  CalendarToday as CalendarIcon,
-  Comment as CommentIcon,
+  PhoneOutlined as PhoneIcon,
+  EmailOutlined as EmailIcon,
+  CalendarTodayOutlined as CalendarIcon,
+  CommentOutlined as CommentIcon,
   Add as AddIcon,
   MoreVert as MoreVertIcon,
-  AccessTime as ClockIcon
+  AccessTimeOutlined as ClockIcon
 } from '@mui/icons-material';
 
 interface LeadTasksProps {
@@ -110,8 +110,13 @@ const LeadTasks: React.FC<LeadTasksProps> = ({ leadId }) => {
   };
 
   return (
-    <Card sx={{ boxShadow: theme.shadows[1] }}>
-      <CardContent sx={{ p: 0 }}>
+    <Card sx={{ 
+      boxShadow: theme.card.boxShadow,
+      '& .MuiCardContent-root': {
+        p: 0
+      }
+    }}>
+      <CardContent>
         <Box sx={{ 
           p: 2, 
           display: 'flex', 
@@ -119,11 +124,17 @@ const LeadTasks: React.FC<LeadTasksProps> = ({ leadId }) => {
           alignItems: 'center', 
           borderBottom: `1px solid ${theme.palette.divider}`
         }}>
-          <Typography variant="subtitle1">Tasks</Typography>
+          <Typography variant="subtitle1" fontWeight={600}>Tasks</Typography>
           <Button 
             variant="contained" 
             size="small"
             startIcon={<AddIcon />}
+            sx={{ 
+              textTransform: 'none',
+              '& .MuiSvgIcon-root': {
+                fontSize: '1.2rem'
+              }
+            }}
           >
             Add Task
           </Button>
@@ -151,7 +162,7 @@ const LeadTasks: React.FC<LeadTasksProps> = ({ leadId }) => {
                     <Typography 
                       variant="body1" 
                       sx={{ 
-                        fontWeight: 500,
+                        fontWeight: 600,
                         textDecoration: task.completed ? 'line-through' : 'none',
                         color: task.completed ? 'text.disabled' : 'text.primary'
                       }}
@@ -207,6 +218,12 @@ const LeadTasks: React.FC<LeadTasksProps> = ({ leadId }) => {
                   transformOrigin={{
                     vertical: 'top',
                     horizontal: 'right'
+                  }}
+                  PaperProps={{
+                    sx: {
+                      boxShadow: 'none',
+                      border: `1px solid ${theme.palette.divider}`
+                    }
                   }}
                 >
                   <MenuItem onClick={handleMenuClose}>Edit</MenuItem>

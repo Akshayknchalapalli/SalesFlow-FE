@@ -1,10 +1,11 @@
 import React from 'react';
-import { Card, CardContent, Grid, Typography, Box, useTheme } from '@mui/material';
+import { Card, CardContent, Typography, Box, useTheme } from '@mui/material';
+import Grid from '@mui/material/GridLegacy';
 import {
-  Group as UsersIcon,
-  Star as StarIcon,
-  LocalOffer as TagIcon,
-  Link as LinkIcon
+  GroupOutlined as UsersIcon,
+  StarOutlined as StarIcon,
+  LocalOfferOutlined as TagIcon,
+  LinkOutlined as LinkIcon
 } from '@mui/icons-material';
 
 const ContactStats = () => {
@@ -15,33 +16,38 @@ const ContactStats = () => {
       title: 'Total Contacts', 
       value: '246', 
       change: '+8% from last month', 
-      icon: <UsersIcon sx={{ color: theme.palette.primary.main }} />
+      icon: <UsersIcon color="primary" />
     },
     { 
       title: 'Customers', 
       value: '127', 
       change: '+12% from last month', 
-      icon: <StarIcon sx={{ color: theme.palette.success.main }} />
+      icon: <StarIcon color="success" />
     },
     { 
       title: 'Prospects', 
       value: '85', 
       change: '+5% from last month', 
-      icon: <TagIcon sx={{ color: theme.palette.info.main }} />
+      icon: <TagIcon color="primary" />
     },
     { 
       title: 'Associated Deals', 
       value: '92', 
       change: '+15% from last month',
-      icon: <LinkIcon sx={{ color: theme.palette.secondary.main }} />
+      icon: <LinkIcon color="secondary" />
     },
   ];
 
   return (
-    <Grid container spacing={2}>
+    <Grid container spacing={2} sx={{ mb: 2 }}>
       {stats.map((stat, index) => (
         <Grid item xs={12} md={6} lg={3} key={index}>
-          <Card sx={{ height: '100%' }}>
+          <Card 
+            sx={{ 
+              height: '100%',
+              boxShadow: theme.card.boxShadow,
+            }}
+          >
             <CardContent>
               <Box display="flex" justifyContent="space-between" alignItems="center">
                 <Box>
@@ -65,21 +71,22 @@ const ContactStats = () => {
                     color="success.main"
                     mt={1}
                     display="block"
+                    fontWeight={500}
                   >
                     {stat.change}
                   </Typography>
                 </Box>
                 <Box
                   sx={{
-                    p: 1.5,
-                    bgcolor: theme.palette.action.hover,
+                    p: 1,
+                    bgcolor: theme.palette.grey[100],
                     borderRadius: '50%',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center'
                   }}
                 >
-                  {React.cloneElement(stat.icon, { sx: { fontSize: 24 } })}
+                  {React.cloneElement(stat.icon, { sx: { fontSize: 20 } })}
                 </Box>
               </Box>
             </CardContent>

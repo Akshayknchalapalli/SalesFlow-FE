@@ -6,25 +6,27 @@ import {
   Tab, 
   Box, 
   Typography, 
-  Grid, 
   Card, 
   CardContent, 
   Chip,
   useTheme 
 } from '@mui/material';
+import Grid from '@mui/material/GridLegacy';
 import {
   ArrowBack as ArrowBackIcon,
   Comment as CommentIcon,
   CalendarToday as CalendarIcon,
   Description as FileTextIcon,
   Link as LinkIcon,
-  Add as AddIcon
+  Add as AddIcon,
+  Email as EmailIcon,
+  Phone as PhoneIcon,
+  LocalOffer as TagIcon
 } from '@mui/icons-material';
 import LeadContactInfo from './LeadContactInfo';
 import LeadInteractionHistory from './LeadInteractionHistory';
 import LeadDocuments from './LeadDocuments';
 import LeadTasks from './LeadTasks';
-
 
 const LeadDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -32,10 +34,10 @@ const LeadDetail = () => {
   const theme = useTheme();
   const [tabValue, setTabValue] = React.useState('history');
   const isNewLead = id === 'new';
-  const title = isNewLead ? "Add New Contact" : "Contact Details";
+  const title = isNewLead ? "Add New Lead" : "Lead Details";
 
   return (
-    <Box>
+    <Box sx={{ p: 3 }}>
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 4 }}>
         <Button 
           variant="text" 
@@ -61,6 +63,20 @@ const LeadDetail = () => {
                 onChange={(e, newValue) => setTabValue(newValue)}
                 indicatorColor="primary"
                 textColor="primary"
+                sx={{
+                  backgroundColor: theme.palette.grey[100],
+                  borderRadius: 1,
+                  px: 2,
+                  width: 'fit-content',
+                  '& .MuiTab-root': {
+                    textTransform: 'none',
+                    fontWeight: 500,
+                    minHeight: 48,
+                    '&.Mui-selected': {
+                      fontWeight: 600,
+                    }
+                  }
+                }}
               >
                 <Tab label="Interaction History" value="history" />
                 <Tab label="Documents" value="documents" />
@@ -85,8 +101,9 @@ const LeadDetail = () => {
                 </Typography>
                 <Box sx={{ display: 'grid', gap: 1 }}>
                   {[
-                    { label: 'Add Interaction', icon: <CommentIcon /> },
-                    { label: 'Schedule Task', icon: <CalendarIcon /> },
+                    { label: 'Send Email', icon: <EmailIcon /> },
+                    { label: 'Make Call', icon: <PhoneIcon /> },
+                    { label: 'Schedule Meeting', icon: <CalendarIcon /> },
                     { label: 'Upload Document', icon: <FileTextIcon /> },
                     { label: 'Link to Deal', icon: <LinkIcon /> }
                   ].map((action, index) => (
@@ -116,7 +133,7 @@ const LeadDetail = () => {
                   <Button 
                     variant="text" 
                     size="small" 
-                    startIcon={<AddIcon fontSize="small" />}
+                    startIcon={<TagIcon fontSize="small" />}
                   >
                     Add
                   </Button>
@@ -128,16 +145,12 @@ const LeadDetail = () => {
                       label={tag}
                       size="small"
                       sx={{
-                        bgcolor: [
-                          theme.palette.primary.light,
-                          theme.palette.success.light,
-                          theme.palette.secondary.light
-                        ][index],
-                        color: [
-                          theme.palette.primary.dark,
-                          theme.palette.success.dark,
-                          theme.palette.secondary.dark
-                        ][index]
+                        backgroundColor: theme.status[['prospect', 'customer', 'partner'][index] as keyof typeof theme.status]?.bg || theme.status.default.bg,
+                        color: theme.status[['prospect', 'customer', 'partner'][index] as keyof typeof theme.status]?.color || theme.status.default.color,
+                        fontWeight: 500,
+                        '& .MuiChip-label': {
+                          color: theme.status[['prospect', 'customer', 'partner'][index] as keyof typeof theme.status]?.color || theme.status.default.color
+                        }
                       }}
                     />
                   ))}

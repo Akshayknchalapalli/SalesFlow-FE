@@ -60,37 +60,28 @@ const ContactDeals: React.FC<ContactDealsProps> = ({ contactId }) => {
 
   // Stage badge styling using theme
   const getStageBadge = (stage: string) => {
-    const stageStyles = {
-      Discovery: {
-        bgcolor: theme.palette.primary.light,
-        color: theme.palette.primary.dark
-      },
-      Proposal: {
-        bgcolor: theme.palette.warning.light,
-        color: theme.palette.warning.dark
-      },
-      Negotiation: {
-        bgcolor: theme.palette.secondary.light,
-        color: theme.palette.secondary.dark
-      },
-      'Closed Won': {
-        bgcolor: theme.palette.success.light,
-        color: theme.palette.success.dark
-      },
-      'Closed Lost': {
-        bgcolor: theme.palette.error.light,
-        color: theme.palette.error.dark
-      }
+    const stageConfig: Record<string, { label: string, status: 'prospect' | 'customer' | 'partner' }> = {
+      Discovery: { label: 'Discovery', status: 'prospect' },
+      Proposal: { label: 'Proposal', status: 'partner' },
+      Negotiation: { label: 'Negotiation', status: 'customer' },
+      'Closed Won': { label: 'Closed Won', status: 'customer' },
+      'Closed Lost': { label: 'Closed Lost', status: 'prospect' }
     };
+
+    const config = stageConfig[stage] ?? stageConfig.Discovery;
+    const status = config?.status ?? 'prospect';
 
     return (
       <Chip
-        label={stage}
+        label={config?.label}
         size="small"
         sx={{
-          ...stageStyles[stage as keyof typeof stageStyles],
+          backgroundColor: theme.status[status].bg,
+          color: theme.status[status].color,
           fontWeight: 500,
-          '&:hover': { backgroundColor: stageStyles[stage as keyof typeof stageStyles].bgcolor }
+          '& .MuiChip-label': {
+            color: theme.status[status].color
+          }
         }}
       />
     );
