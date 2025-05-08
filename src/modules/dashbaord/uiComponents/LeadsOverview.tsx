@@ -2,13 +2,6 @@ import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from 'recha
 import { Card, CardContent, CardHeader, Typography, Box, useTheme } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
-const data = [
-  { name: 'New', value: 25, color: '#3B82F6' },
-  { name: 'Contacted', value: 35, color: '#10B981' },
-  { name: 'Qualified', value: 20, color: '#F97066' },
-  { name: 'Lost', value: 20, color: '#6B7280' },
-];
-
 const TooltipContainer = styled('div')(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
   padding: theme.spacing(1.5),
@@ -75,6 +68,12 @@ const CustomLegend = ({ payload }: any) => {
 
 const LeadsOverview = () => {
   const theme = useTheme();
+  const data = [
+    { name: 'New', value: 25, color: theme.chart.new },
+    { name: 'Contacted', value: 35, color: theme.chart.contacted },
+    { name: 'Qualified', value: 20, color: theme.chart.qualified },
+    { name: 'Lost', value: 20, color: theme.chart.lost },
+  ];
 
   return (
     <Card sx={{ 

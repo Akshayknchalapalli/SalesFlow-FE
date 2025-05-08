@@ -53,21 +53,43 @@ const deals = [
 ];
 
 const StatusChip = styled(Chip)(({ theme }) => ({
-  fontWeight: 500,
-  fontSize: theme.typography.pxToRem(12),
-  borderRadius: theme.shape.borderRadius,
+  fontWeight: 700,
+  fontSize: theme.typography.pxToRem(13),
+  borderRadius: 999,
+  letterSpacing: 0.5,
+  padding: '0 10px',
+  height: 28,
+  textTransform: 'capitalize',
+  boxShadow: 'none',
 }));
 
+// Use theme.status for status chip background and text color (set in theme.ts)
 const getStatusColor = (status: string, theme: any) => {
   switch (status) {
     case 'Active':
-      return { bgcolor: theme.palette.primary.light, color: theme.palette.primary.dark };
+      return {
+        bgcolor: theme.status.active.bg,
+        color: theme.status.active.color,
+        border: 'none',
+      };
     case 'At Risk':
-      return { bgcolor: theme.palette.error.light, color: theme.palette.error.dark };
+      return {
+        bgcolor: theme.status.atRisk.bg,
+        color: theme.status.atRisk.color,
+        border: 'none',
+      };
     case 'Won':
-      return { bgcolor: theme.palette.success.light, color: theme.palette.success.dark };
+      return {
+        bgcolor: theme.status.won.bg,
+        color: theme.status.won.color,
+        border: 'none',
+      };
     default:
-      return { bgcolor: theme.palette.grey[200], color: theme.palette.text.secondary };
+      return {
+        bgcolor: theme.status.default.bg,
+        color: theme.status.default.color,
+        border: 'none',
+      };
   }
 };
 

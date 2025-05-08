@@ -8,8 +8,11 @@ const persistConfig = {
   storage,
 };
 
+const dummyReducer = (state = {}) => state;
+
 const rootReducer = combineReducers({
   /* ============ Login ========================= */
+  dummy: dummyReducer,
   
 });
 

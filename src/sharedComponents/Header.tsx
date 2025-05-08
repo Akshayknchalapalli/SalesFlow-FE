@@ -73,7 +73,17 @@ const Header = () => {
   };
 
   return (
-    <StyledAppBar position="sticky" elevation={0}>
+    <AppBar
+      position="static"
+      elevation={0}
+      color="transparent"
+      sx={{
+        boxShadow: theme.shadows[1],
+        background: theme.palette.background.paper,
+        borderBottom: `1px solid ${theme.palette.divider}`,
+        zIndex: 1201,
+      }}
+    >
       <Toolbar>
         <SearchContainer>
           <SearchIcon sx={{
@@ -182,7 +192,7 @@ const Header = () => {
           </Button>
         </Box>
       </Toolbar>
-    </StyledAppBar>
+    </AppBar>
   );
 };
 

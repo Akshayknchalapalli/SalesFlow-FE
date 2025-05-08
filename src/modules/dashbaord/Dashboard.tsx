@@ -1,7 +1,7 @@
 import React from "react";
 
 import { styled } from "@mui/system";
-import Grid from "@mui/material/Grid2";
+import Grid from "@mui/material/Grid";
 import { Box, Typography } from "@mui/material";
 import {
   AreaChart,
@@ -28,7 +28,7 @@ const Dashboard: React.FC = () => {
   const theme = useTheme();
   return (
     <Box sx={{ p: 3 }}>
-      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+      <Box bgcolor="red" sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <Typography variant="h5" fontWeight="bold" gutterBottom>
           Dashboard
         </Typography>

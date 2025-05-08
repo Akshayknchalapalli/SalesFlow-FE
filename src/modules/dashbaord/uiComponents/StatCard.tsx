@@ -26,8 +26,9 @@ const CardContainer = styled(Box)(({ theme }) => ({
   height: 150,
 }));
 
+// Use theme.icon.statCardBg for icon background (set in theme.ts)
 const IconContainer = styled(Box)(({ theme }) => ({
-  backgroundColor: theme.palette.primary.light,
+  backgroundColor: theme.icon.statCardBg,
   borderRadius: theme.shape.borderRadius / 2,
   width: theme.spacing(5),
   height: theme.spacing(5),
