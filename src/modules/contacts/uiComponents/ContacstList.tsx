@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Table,
@@ -27,97 +27,263 @@ import {
   InsertDriveFileOutlined as FileIcon,
   DeleteOutlined as DeleteIcon
 } from '@mui/icons-material';
+import type { ContactDTO } from '../ContactDTO';
 
-const mockContacts = [
-    {
-      id: '1',
-      name: 'Emma Wilson',
-      title: 'Marketing Director',
-      company: 'Acme Corp',
-      email: 'emma.wilson@acme.com',
-      phone: '(555) 234-5678',
-      stage: 'customer',
-      lastContact: '1 day ago',
-      deals: 3
+const mockContacts: (ContactDTO & { deals?: number })[] = [
+  {
+    id: 1,
+    firstName: 'Emma',
+    lastName: 'Wilson',
+    email: 'emma.wilson@acme.com',
+    phone: '(555) 234-5678',
+    companyName: 'Acme Corp',
+    jobTitle: 'Marketing Director',
+    stage: 'customer',
+    ownerId: 'Sarah Johnson',
+    preferences: {
+      preferredContactMethod: 'Email',
+      preferredContactTime: 'Morning (9-11 AM)',
+      doNotContact: false,
+      marketingOptIn: true,
+      communicationLanguage: 'English',
     },
-    {
-      id: '2',
-      name: 'David Chen',
-      title: 'CTO',
-      company: 'TechFlow Inc',
-      email: 'david.chen@techflow.com',
-      phone: '(555) 876-5432',
-      stage: 'prospect',
-      lastContact: '3 days ago',
-      deals: 1
+    addresses: [
+      {
+        type: 'work',
+        street: '123 Business Ave',
+        city: 'New York',
+        state: 'NY',
+        postalCode: '10001',
+        country: 'USA',
+        primary: true,
+      },
+    ],
+    socialProfiles: [
+      {
+        platform: 'LinkedIn',
+        profileUrl: 'https://linkedin.com/in/emmawilson',
+        username: 'emmawilson',
+        verified: true,
+      },
+    ],
+    notes: 'Key decision maker for marketing purchases.',
+    createdAt: '2023-01-01T10:00:00Z',
+    updatedAt: '2023-01-10T12:00:00Z',
+    createdBy: 'admin',
+    updatedBy: 'admin',
+    version: 1,
+    deals: 3,
+  },
+  {
+    id: 2,
+    firstName: 'David',
+    lastName: 'Chen',
+    email: 'david.chen@techflow.com',
+    phone: '(555) 876-5432',
+    companyName: 'TechFlow Inc',
+    jobTitle: 'CTO',
+    stage: 'prospect',
+    ownerId: 'Sarah Johnson',
+    preferences: {
+      preferredContactMethod: 'Email',
+      preferredContactTime: 'Morning (9-11 AM)',
+      doNotContact: false,
+      marketingOptIn: true,
+      communicationLanguage: 'English',
     },
-    {
-      id: '3',
-      name: 'Sophia Rodriguez',
-      title: 'CEO',
-      company: 'Innovate Solutions',
-      email: 'sophia@innovate.com',
-      phone: '(555) 345-6789',
-      stage: 'customer',
-      lastContact: 'Today',
-      deals: 4
+    addresses: [
+      {
+        type: 'work',
+        street: '456 Innovation St',
+        city: 'San Francisco',
+        state: 'CA',
+        postalCode: '94103',
+        country: 'USA',
+        primary: true,
+      },
+    ],
+    socialProfiles: [
+      {
+        platform: 'LinkedIn',
+        profileUrl: 'https://linkedin.com/in/davidchen',
+        username: 'davidchen',
+        verified: true,
+      },
+    ],
+    notes: 'Interested in AI and cloud technologies.',
+    createdAt: '2023-01-02T11:00:00Z',
+    updatedAt: '2023-01-11T13:00:00Z',
+    createdBy: 'admin',
+    updatedBy: 'admin',
+    version: 1,
+    deals: 2,
+  },
+  {
+    id: 3,
+    firstName: 'Sophia',
+    lastName: 'Rodriguez',
+    email: 'sophia@innovate.com',
+    phone: '(555) 345-6789',
+    companyName: 'Innovate Solutions',
+    jobTitle: 'CEO',
+    stage: 'customer',
+    ownerId: 'Sarah Johnson',
+    preferences: {
+      preferredContactMethod: 'Email',
+      preferredContactTime: 'Afternoon (1-3 PM)',
+      doNotContact: false,
+      marketingOptIn: true,
+      communicationLanguage: 'Spanish',
     },
-    {
-      id: '4',
-      name: 'Michael Taylor',
-      title: 'Sales Manager',
-      company: 'Global Enterprises',
-      email: 'michael.t@global.com',
-      phone: '(555) 567-8901',
-      stage: 'partner',
-      lastContact: 'Yesterday',
-      deals: 2
+    addresses: [
+      {
+        type: 'work',
+        street: '789 Tech Blvd',
+        city: 'San Diego',
+        state: 'CA',
+        postalCode: '92101',
+        country: 'USA',
+        primary: true,
+      },
+    ],
+    socialProfiles: [
+      {
+        platform: 'LinkedIn',
+        profileUrl: 'https://linkedin.com/in/sophiarodriguez',
+        username: 'sophiarodriguez',
+        verified: true,
+      },
+    ],
+    notes: 'Leads innovation projects and strategic partnerships.',
+    createdAt: '2023-01-03T12:00:00Z',
+    updatedAt: '2023-01-12T14:00:00Z',
+    createdBy: 'admin',
+    updatedBy: 'admin',
+    version: 1,
+    deals: 1,
+  },
+  {
+    id: 4,
+    firstName: 'Michael',
+    lastName: 'Taylor',
+    email: 'michael.t@global.com',
+    phone: '(555) 567-8901',
+    companyName: 'Global Enterprises',
+    jobTitle: 'Sales Manager',
+    stage: 'partner',
+    ownerId: 'Sarah Johnson',
+    preferences: {
+      preferredContactMethod: 'Phone',
+      preferredContactTime: 'Evening (7-9 PM)',
+      doNotContact: false,
+      marketingOptIn: true,
+      communicationLanguage: 'English',
     },
-    {
-      id: '5',
-      name: 'Olivia Johnson',
-      title: 'Product Manager',
-      company: 'Future Tech',
-      email: 'olivia.j@futuretech.com',
-      phone: '(555) 678-9012',
-      stage: 'prospect',
-      lastContact: '1 week ago',
-      deals: 0
+    addresses: [
+      {
+        type: 'work',
+        street: '101 Market St',
+        city: 'San Francisco',
+        state: 'CA',
+        postalCode: '94103',
+        country: 'USA',
+        primary: true,
+      },
+    ],
+    socialProfiles: [
+      {
+        platform: 'LinkedIn',
+        profileUrl: 'https://linkedin.com/in/michael-taylor',
+        username: 'michael-taylor',
+        verified: true,
+      },
+    ],
+    notes: 'Strong relationship with sales team.',
+    createdAt: '2023-01-04T13:00:00Z',
+    updatedAt: '2023-01-13T15:00:00Z',
+    createdBy: 'admin',
+    updatedBy: 'admin',
+    version: 1,
+    deals: 4,
+  },
+  {
+    id: 5,
+    firstName: 'Olivia',
+    lastName: 'Johnson',
+    email: 'olivia.j@futuretech.com',
+    phone: '(555) 678-9012',
+    companyName: 'Future Tech',
+    jobTitle: 'Product Manager',
+    stage: 'prospect',
+    ownerId: 'Sarah Johnson',
+    preferences: {
+      preferredContactMethod: 'Email',
+      preferredContactTime: 'Morning (9-11 AM)',
+      doNotContact: false,
+      marketingOptIn: true,
+      communicationLanguage: 'English',
     },
-  ];
+    addresses: [
+      {
+        type: 'work',
+        street: '321 Innovation St',
+        city: 'San Francisco',
+        state: 'CA',
+        postalCode: '94103',
+        country: 'USA',
+        primary: true,
+      },
+    ],
+    socialProfiles: [
+      {
+        platform: 'LinkedIn',
+        profileUrl: 'https://linkedin.com/in/oliviajohnson',
+        username: 'oliviajohnson',
+        verified: true,
+      },
+    ],
+    notes: 'Interested in new product development.',
+    createdAt: '2023-01-05T14:00:00Z',
+    updatedAt: '2023-01-14T16:00:00Z',
+    createdBy: 'admin',
+    updatedBy: 'admin',
+    version: 1,
+    deals: 2,
+  },
+];
 
-  const StageChip = ({ stage }: { stage: string }) => {
-    const theme = useTheme();
-    
-    const stageConfig: Record<string, { label: string }> = {
-      prospect: { label: 'Prospect' },
-      customer: { label: 'Customer' },
-      partner: { label: 'Partner' },
-    };
+const StageChip = ({ stage }: { stage: string }) => {
+  const theme = useTheme();
   
-    const config = stageConfig[stage as keyof typeof stageConfig] || stageConfig.prospect;
-  
-    return (
-      <Chip
-        label={config?.label}
-        size="small"
-        sx={{
-          backgroundColor: theme.status[stage as keyof typeof theme.status]?.bg || theme.status.default.bg,
-          color: theme.status[stage as keyof typeof theme.status]?.color || theme.status.default.color,
-          fontWeight: 500,
-          '& .MuiChip-label': {
-            color: theme.status[stage as keyof typeof theme.status]?.color || theme.status.default.color
-          }
-        }}
-      />
-    );
+  const stageConfig: Record<string, { label: string }> = {
+    prospect: { label: 'Prospect' },
+    customer: { label: 'Customer' },
+    partner: { label: 'Partner' },
   };
 
-interface ContactsListProps {
-    filter: string;
-  }
+  const config = stageConfig[stage as keyof typeof stageConfig] || stageConfig.prospect;
 
-const ContactsList: React.FC<ContactsListProps> = ({ filter }) => {
+  return (
+    <Chip
+      label={config?.label}
+      size="small"
+      sx={{
+        backgroundColor: theme.status[stage as keyof typeof theme.status]?.bg || theme.status.default.bg,
+        color: theme.status[stage as keyof typeof theme.status]?.color || theme.status.default.color,
+        fontWeight: 500,
+        '& .MuiChip-label': {
+          color: theme.status[stage as keyof typeof theme.status]?.color || theme.status.default.color
+        }
+      }}
+    />
+  );
+};
+
+interface ContactsListProps {
+  filter: string;
+}
+
+const ContactsList: React.FC<ContactsListProps> = ({ filter }: ContactsListProps) => {
   const theme = useTheme();
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -131,7 +297,11 @@ const ContactsList: React.FC<ContactsListProps> = ({ filter }) => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleMenuClose = () => {
+  const handleMenuCloseMenu = (_event: object, _reason: 'backdropClick' | 'escapeKeyDown') => {
+    setAnchorEl(null);
+  };
+
+  const handleMenuItemClick = () => {
     setAnchorEl(null);
   };
 
@@ -190,13 +360,13 @@ const ContactsList: React.FC<ContactsListProps> = ({ filter }) => {
                 <TableCell padding="checkbox"><Checkbox /></TableCell>
                 
                 <TableCell onClick={() => navigate(`/contacts/${contact.id}`)}>
-                  <Typography fontWeight="medium">{contact.name}</Typography>
+                  <Typography fontWeight="medium">{contact.firstName} {contact.lastName}</Typography>
                 </TableCell>
 
                 <TableCell onClick={() => navigate(`/contacts/${contact.id}`)}>
                   <Box>
-                    <Typography fontWeight="medium">{contact.title}</Typography>
-                    <Typography variant="body2" color="text.secondary">{contact.company}</Typography>
+                    <Typography fontWeight="medium">{contact.jobTitle}</Typography>
+                    <Typography variant="body2" color="text.secondary">{contact.companyName}</Typography>
                   </Box>
                 </TableCell>
 
@@ -218,20 +388,17 @@ const ContactsList: React.FC<ContactsListProps> = ({ filter }) => {
                 </TableCell>
 
                 <TableCell onClick={() => navigate(`/contacts/${contact.id}`)}>
-                  <Typography variant="body2">{contact.lastContact}</Typography>
+                  <Typography variant="body2">{contact.createdAt}</Typography>
                 </TableCell>
 
                 <TableCell onClick={() => navigate(`/contacts/${contact.id}`)}>
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                    <LinkIcon sx={{ fontSize: 14, color: theme.palette.primary.main }} />
-                    <Typography variant="body2">{contact.deals} deals</Typography>
-                  </Box>
+                  <Typography variant="body2">{contact.deals ?? '-'}</Typography>
                 </TableCell>
 
                 <TableCell>
                   <IconButton
                     size="small"
-                    onClick={(e) => {
+                    onClick={(e: React.MouseEvent<HTMLElement>) => {
                       e.stopPropagation();
                       handleMenuOpen(e);
                     }}
@@ -241,8 +408,8 @@ const ContactsList: React.FC<ContactsListProps> = ({ filter }) => {
                   <Menu
                     anchorEl={anchorEl}
                     open={open}
-                    onClose={handleMenuClose}
-                    onClick={(e) => e.stopPropagation()}
+                    onClose={handleMenuCloseMenu}
+                    onClick={(e: React.MouseEvent<HTMLElement>) => e.stopPropagation()}
                     anchorOrigin={{
                       vertical: 'bottom',
                       horizontal: 'right'
@@ -258,23 +425,23 @@ const ContactsList: React.FC<ContactsListProps> = ({ filter }) => {
                       }
                     }}
                   >
-                    <MenuItem onClick={handleMenuClose}>
+                    <MenuItem onClick={handleMenuItemClick}>
                       <CalendarIcon fontSize="small" sx={{ mr: 1 }} />
                       Schedule Meeting
                     </MenuItem>
-                    <MenuItem onClick={handleMenuClose}>
+                    <MenuItem onClick={handleMenuItemClick}>
                       <EmailIcon fontSize="small" sx={{ mr: 1 }} />
                       Send Email
                     </MenuItem>
-                    <MenuItem onClick={handleMenuClose}>
+                    <MenuItem onClick={handleMenuItemClick}>
                       <PhoneIcon fontSize="small" sx={{ mr: 1 }} />
                       Call
                     </MenuItem>
-                    <MenuItem onClick={handleMenuClose}>
+                    <MenuItem onClick={handleMenuItemClick}>
                       <LinkIcon fontSize="small" sx={{ mr: 1 }} />
                       Link a Deal
                     </MenuItem>
-                    <MenuItem onClick={handleMenuClose} sx={{ color: 'error.main' }}>
+                    <MenuItem onClick={handleMenuItemClick} sx={{ color: 'error.main' }}>
                       <DeleteIcon fontSize="small" sx={{ mr: 1 }} />
                       Delete Contact
                     </MenuItem>
@@ -290,3 +457,4 @@ const ContactsList: React.FC<ContactsListProps> = ({ filter }) => {
 };
 
 export default ContactsList;
+export { mockContacts };

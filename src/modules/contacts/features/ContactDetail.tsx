@@ -26,6 +26,9 @@ import ContactInfo from '../uiComponents/ContactInfo';
 import ContactInteractions from '../uiComponents/ContactInteractions';
 import ContactDeals from '../uiComponents/ContactDeals';
 import ContactDocuments from '../uiComponents/ContactDocuments';
+import { cardFadeIn } from '../../../theme/Animations';
+import { mockContacts } from '../uiComponents/ContacstList';
+import { AddressDTO, SocialProfileDTO } from '../ContactDTO';
 
 const ContactDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -35,6 +38,8 @@ const ContactDetail = () => {
   const [tabValue, setTabValue] = React.useState('interactions');
 
   const title = isNewContact ? "Add New Contact" : "Contact Details";
+
+  const contact = mockContacts.find(c => String(c.id) === String(id));
 
   return (
     <Box sx={{ p: 3 }}>
@@ -182,6 +187,43 @@ const ContactDetail = () => {
                 </Box>
               </CardContent>
             </Card>
+
+            {!contact ? (
+              <Card sx={{ mt: 2 }}><CardContent><Typography color="error">Contact not found.</Typography></CardContent></Card>
+            ) : (
+              <Card sx={{ mt: 2, animation: `${cardFadeIn} 0.7s cubic-bezier(0.4,0,0.2,1)` }}>
+                <CardContent>
+                  <Typography variant="h6" gutterBottom>Addresses</Typography>
+                  {contact.addresses?.length > 0 ? contact.addresses.map((address: AddressDTO, idx: number) => (
+                    <Box key={idx} sx={{ mb: 1, p: 1.5, borderRadius: 2, background: theme.card.background, boxShadow: theme.card.boxShadow }}>
+                      <Typography variant="subtitle2" color="primary" fontWeight={600}>{address.type.toUpperCase()} {address.primary && '(Primary)'}</Typography>
+                      <Typography variant="body2">{address.street}, {address.city}, {address.state}, {address.postalCode}, {address.country}</Typography>
+                    </Box>
+                  )) : <Typography variant="body2" color="text.secondary">No addresses available</Typography>}
+
+                  <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>Preferences</Typography>
+                  {contact.preferences ? (
+                    <Box sx={{ p: 1.5, borderRadius: 2, background: theme.card.background, boxShadow: theme.card.boxShadow }}>
+                      <Typography variant="body2">Preferred Method: <b>{contact.preferences.preferredContactMethod}</b></Typography>
+                      <Typography variant="body2">Preferred Time: <b>{contact.preferences.preferredContactTime}</b></Typography>
+                      <Typography variant="body2">Do Not Contact: <b>{contact.preferences.doNotContact ? 'Yes' : 'No'}</b></Typography>
+                      <Typography variant="body2">Marketing Opt-In: <b>{contact.preferences.marketingOptIn ? 'Yes' : 'No'}</b></Typography>
+                      <Typography variant="body2">Language: <b>{contact.preferences.communicationLanguage}</b></Typography>
+                    </Box>
+                  ) : <Typography variant="body2" color="text.secondary">No preferences available</Typography>}
+
+                  <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>Social Profiles</Typography>
+                  {contact.socialProfiles?.length > 0 ? contact.socialProfiles.map((profile: SocialProfileDTO, idx: number) => (
+                    <Box key={idx} sx={{ mb: 1, p: 1.5, borderRadius: 2, background: theme.card.background, boxShadow: theme.card.boxShadow, display: 'flex', alignItems: 'center', gap: 1 }}>
+                      <a href={profile.profileUrl} target="_blank" rel="noopener noreferrer" style={{ color: theme.palette.primary.main, fontWeight: 600 }}>
+                        {profile.platform}: {profile.username}
+                      </a>
+                      {profile.verified && <span style={{ color: theme.status.customer.color, fontWeight: 700, marginLeft: 4 }}>✔️</span>}
+                    </Box>
+                  )) : <Typography variant="body2" color="text.secondary">No social profiles available</Typography>}
+                </CardContent>
+              </Card>
+            )}
           </Grid>
         )}
       </Grid>
