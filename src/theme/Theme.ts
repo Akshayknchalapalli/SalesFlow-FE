@@ -47,6 +47,15 @@ declare module '@mui/material/styles' {
     icon: {
       statCardBg: string; // Use for stat card icon background (transparent by default)
     };
+    // Social media platform colors
+    social: {
+      linkedin: { bg: string; color: string };
+      twitter: { bg: string; color: string };
+      facebook: { bg: string; color: string };
+      instagram: { bg: string; color: string };
+      github: { bg: string; color: string };
+      default: { bg: string; color: string };
+    };
   }
   interface ThemeOptions {
     sidebar?: Partial<Theme['sidebar']>;
@@ -54,6 +63,7 @@ declare module '@mui/material/styles' {
     chart?: Partial<Theme['chart']>;
     status?: Partial<Theme['status']>;
     icon?: Partial<Theme['icon']>;
+    social?: Partial<Theme['social']>;
   }
 }
 
@@ -113,6 +123,14 @@ const baseTheme: ThemeOptions = {
   },
   icon: {
     statCardBg: 'transparent', // Use for stat card icon background (transparent by default)
+  },
+  social: {
+    linkedin: { bg: 'rgba(0,119,181,0.1)', color: '#0077B5' },
+    twitter: { bg: 'rgba(29,161,242,0.1)', color: '#1DA1F2' },
+    facebook: { bg: 'rgba(66,103,178,0.1)', color: '#4267B2' },
+    instagram: { bg: 'rgba(225,48,108,0.1)', color: '#E1306C' },
+    github: { bg: 'rgba(36,41,46,0.1)', color: '#24292E' },
+    default: { bg: 'rgba(107,114,128,0.1)', color: '#6B7280' },
   },
 };
 
