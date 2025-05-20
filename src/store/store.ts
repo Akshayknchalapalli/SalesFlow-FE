@@ -2,16 +2,19 @@ import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 // import sessionStorage from "redux-persist/es/storage/session";
+import authReducer from "../modules/auth/model/slices/authSlice";
 
 const persistConfig = {
   key: "root",
   storage,
+  whitelist: ['auth'], // only persist auth state
 };
 
 const dummyReducer = (state = {}) => state;
 
 const rootReducer = combineReducers({
-  /* ============ Login ========================= */
+  /* ============ Auth ========================= */
+  auth: authReducer,
   dummy: dummyReducer,
   
 });

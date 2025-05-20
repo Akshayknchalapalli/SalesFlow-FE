@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Box, Typography, useTheme, styled, keyframes } from '@mui/material';
 import { cardFadeIn } from '../theme/Animations';
 import LoadingSpinner from './LoadingSpinner';
@@ -68,7 +68,9 @@ const LogoContainer = styled(Box)(({ theme }) => ({
   }
 }));
 
-const StaggeredText = styled(Typography)(({ theme, delay = 0 }) => ({
+const StaggeredText = styled(Typography, {
+  shouldForwardProp: (prop) => prop !== 'delay',
+})<{ delay?: number }>(({ theme, delay = 0 }) => ({
   opacity: 0,
   animation: `${fadeInAnimation} 0.5s ease-out forwards`,
   animationDelay: `${delay}ms`,
@@ -99,7 +101,10 @@ const LoadingScreen = () => {
     let currentIndex = 0;
     const messageInterval = setInterval(() => {
       currentIndex = (currentIndex + 1) % loadingMessages.length;
-      setLoadingText(loadingMessages[currentIndex]);
+      const nextMessage = loadingMessages[currentIndex];
+      if (nextMessage) {
+        setLoadingText(nextMessage);
+      }
     }, 1200);
 
     // Simulate progress with non-linear speed (faster at beginning, slower at end)
@@ -179,7 +184,6 @@ const LoadingScreen = () => {
             <StaggeredText
               key={index}
               variant="subtitle1"
-              component="span"
               delay={100 * index}
               sx={{
                 fontWeight: 500,
