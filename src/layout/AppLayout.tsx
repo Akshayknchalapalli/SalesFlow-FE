@@ -18,6 +18,7 @@ const AppLayout = () => {
           top: 0,
           bottom: 0,
           zIndex: 1200,
+          overflow: 'auto',
         }}
       >
         <Sidebar />
