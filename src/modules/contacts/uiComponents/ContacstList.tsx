@@ -57,6 +57,24 @@ const mockContacts: (ContactDTO & { deals?: number })[] = [
         country: 'USA',
         primary: true,
       },
+      {
+        type: 'home',
+        street: '456 Park Avenue',
+        city: 'New York',
+        state: 'NY',
+        postalCode: '10022',
+        country: 'USA',
+        primary: false,
+      },
+      {
+        type: 'mailing',
+        street: 'PO Box 789',
+        city: 'New York',
+        state: 'NY',
+        postalCode: '10019',
+        country: 'USA',
+        primary: false,
+      }
     ],
     socialProfiles: [
       {
@@ -65,6 +83,18 @@ const mockContacts: (ContactDTO & { deals?: number })[] = [
         username: 'emmawilson',
         verified: true,
       },
+      {
+        platform: 'Twitter',
+        profileUrl: 'https://twitter.com/emmawilson',
+        username: '@emmawilson',
+        verified: true,
+      },
+      {
+        platform: 'Instagram',
+        profileUrl: 'https://instagram.com/emmawilson',
+        username: '@emmawilson',
+        verified: false,
+      }
     ],
     notes: 'Key decision maker for marketing purchases.',
     createdAt: '2023-01-01T10:00:00Z',
@@ -101,6 +131,15 @@ const mockContacts: (ContactDTO & { deals?: number })[] = [
         country: 'USA',
         primary: true,
       },
+      {
+        type: 'home',
+        street: '789 Tech Valley Rd',
+        city: 'San Francisco',
+        state: 'CA',
+        postalCode: '94107',
+        country: 'USA',
+        primary: false,
+      }
     ],
     socialProfiles: [
       {
@@ -109,6 +148,18 @@ const mockContacts: (ContactDTO & { deals?: number })[] = [
         username: 'davidchen',
         verified: true,
       },
+      {
+        platform: 'GitHub',
+        profileUrl: 'https://github.com/davidchen',
+        username: 'davidchen',
+        verified: true,
+      },
+      {
+        platform: 'Twitter',
+        profileUrl: 'https://twitter.com/davidchen',
+        username: '@davidchen',
+        verified: true,
+      }
     ],
     notes: 'Interested in AI and cloud technologies.',
     createdAt: '2023-01-02T11:00:00Z',
@@ -145,6 +196,24 @@ const mockContacts: (ContactDTO & { deals?: number })[] = [
         country: 'USA',
         primary: true,
       },
+      {
+        type: 'home',
+        street: '321 Ocean View Dr',
+        city: 'San Diego',
+        state: 'CA',
+        postalCode: '92109',
+        country: 'USA',
+        primary: false,
+      },
+      {
+        type: 'mailing',
+        street: 'PO Box 123',
+        city: 'San Diego',
+        state: 'CA',
+        postalCode: '92101',
+        country: 'USA',
+        primary: false,
+      }
     ],
     socialProfiles: [
       {
@@ -153,6 +222,24 @@ const mockContacts: (ContactDTO & { deals?: number })[] = [
         username: 'sophiarodriguez',
         verified: true,
       },
+      {
+        platform: 'Twitter',
+        profileUrl: 'https://twitter.com/sophiarodriguez',
+        username: '@sophiarodriguez',
+        verified: true,
+      },
+      {
+        platform: 'Instagram',
+        profileUrl: 'https://instagram.com/sophiarodriguez',
+        username: '@sophiarodriguez',
+        verified: true,
+      },
+      {
+        platform: 'Facebook',
+        profileUrl: 'https://facebook.com/sophiarodriguez',
+        username: 'Sophia Rodriguez',
+        verified: true,
+      }
     ],
     notes: 'Leads innovation projects and strategic partnerships.',
     createdAt: '2023-01-03T12:00:00Z',
@@ -189,6 +276,15 @@ const mockContacts: (ContactDTO & { deals?: number })[] = [
         country: 'USA',
         primary: true,
       },
+      {
+        type: 'home',
+        street: '555 Golden Gate Ave',
+        city: 'San Francisco',
+        state: 'CA',
+        postalCode: '94102',
+        country: 'USA',
+        primary: false,
+      }
     ],
     socialProfiles: [
       {
@@ -197,6 +293,18 @@ const mockContacts: (ContactDTO & { deals?: number })[] = [
         username: 'michael-taylor',
         verified: true,
       },
+      {
+        platform: 'Twitter',
+        profileUrl: 'https://twitter.com/michaeltaylor',
+        username: '@michaeltaylor',
+        verified: true,
+      },
+      {
+        platform: 'Facebook',
+        profileUrl: 'https://facebook.com/michaeltaylor',
+        username: 'Michael Taylor',
+        verified: true,
+      }
     ],
     notes: 'Strong relationship with sales team.',
     createdAt: '2023-01-04T13:00:00Z',
@@ -233,6 +341,15 @@ const mockContacts: (ContactDTO & { deals?: number })[] = [
         country: 'USA',
         primary: true,
       },
+      {
+        type: 'home',
+        street: '888 Tech Park Ave',
+        city: 'San Francisco',
+        state: 'CA',
+        postalCode: '94107',
+        country: 'USA',
+        primary: false,
+      }
     ],
     socialProfiles: [
       {
@@ -241,6 +358,24 @@ const mockContacts: (ContactDTO & { deals?: number })[] = [
         username: 'oliviajohnson',
         verified: true,
       },
+      {
+        platform: 'GitHub',
+        profileUrl: 'https://github.com/oliviajohnson',
+        username: 'oliviajohnson',
+        verified: true,
+      },
+      {
+        platform: 'Twitter',
+        profileUrl: 'https://twitter.com/oliviajohnson',
+        username: '@oliviajohnson',
+        verified: true,
+      },
+      {
+        platform: 'Instagram',
+        profileUrl: 'https://instagram.com/oliviajohnson',
+        username: '@oliviajohnson',
+        verified: false,
+      }
     ],
     notes: 'Interested in new product development.',
     createdAt: '2023-01-05T14:00:00Z',
@@ -308,7 +443,6 @@ const ContactsList: React.FC<ContactsListProps> = ({ filter }: ContactsListProps
   return (
     <Box sx={{ 
       backgroundColor: theme.palette.background.paper, 
-      // borderRadius: theme.shape.borderRadius,
       boxShadow: theme.card.boxShadow,
       overflow: 'hidden'
     }}>

@@ -9,7 +9,8 @@ import {
   Card, 
   CardContent, 
   Chip,
-  useTheme 
+  useTheme,
+  Link
 } from '@mui/material';
 import Grid from '@mui/material/GridLegacy';
 import {
@@ -20,7 +21,11 @@ import {
   Link as LinkIcon,
   Description as FileIcon,
   LocalOffer as TagIcon,
-  Dashboard
+  LinkedIn as LinkedInIcon,
+  Twitter as TwitterIcon,
+  Facebook as FacebookIcon,
+  Instagram as InstagramIcon,
+  GitHub as GitHubIcon,
 } from '@mui/icons-material';
 import ContactInfo from '../uiComponents/ContactInfo';
 import ContactInteractions from '../uiComponents/ContactInteractions';
@@ -28,7 +33,7 @@ import ContactDeals from '../uiComponents/ContactDeals';
 import ContactDocuments from '../uiComponents/ContactDocuments';
 import { cardFadeIn } from '../../../theme/Animations';
 import { mockContacts } from '../uiComponents/ContacstList';
-import { AddressDTO, SocialProfileDTO } from '../ContactDTO';
+import { AddressDTO, SocialProfileDTO, ContactStage } from '../ContactDTO';
 
 const ContactDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -40,6 +45,31 @@ const ContactDetail = () => {
   const title = isNewContact ? "Add New Contact" : "Contact Details";
 
   const contact = mockContacts.find(c => String(c.id) === String(id));
+
+  if (!contact && !isNewContact) {
+    return (
+      <Box sx={{ p: 3 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 4 }}>
+          <Button 
+            variant="text" 
+            startIcon={<ArrowBackIcon />}
+            onClick={() => navigate('/contacts')}
+            sx={{ p: 1 }}
+          >
+            Back
+          </Button>
+          <Typography variant="h4" component="h1" sx={{ fontWeight: 700 }}>
+            Contact Not Found
+          </Typography>
+        </Box>
+        <Card>
+          <CardContent>
+            <Typography color="error">The requested contact could not be found.</Typography>
+          </CardContent>
+        </Card>
+      </Box>
+    );
+  }
 
   return (
     <Box sx={{ p: 3 }}>
@@ -61,7 +91,7 @@ const ContactDetail = () => {
         <Grid item xs={12} lg={8}>
           <ContactInfo isNew={isNewContact} contactId={id} />
           
-          {!isNewContact && (
+          {!isNewContact && contact && (
             <Box sx={{ mt: 3 }}>
               <Tabs 
                 value={tabValue} 
@@ -97,7 +127,7 @@ const ContactDetail = () => {
           )}
         </Grid>
         
-        {!isNewContact && (
+        {!isNewContact && contact && (
           <Grid item xs={12} lg={4}>
             <Card sx={{ mb: 2 }}>
               <CardContent>
@@ -133,10 +163,11 @@ const ContactDetail = () => {
                 </Typography>
                 <Box sx={{ display: 'grid', gap: 1.5 }}>
                   {[
-                    ['Preferred Contact Method:', 'Email'],
-                    ['Best Time to Contact:', 'Morning (9-11 AM)'],
-                    ['Timezone:', 'EST (UTC-5)'],
-                    ['Communication Frequency:', 'Weekly']
+                    ['Preferred Contact Method:', contact.preferences.preferredContactMethod],
+                    ['Best Time to Contact:', contact.preferences.preferredContactTime],
+                    ['Do Not Contact:', contact.preferences.doNotContact ? 'Yes' : 'No'],
+                    ['Marketing Opt-In:', contact.preferences.marketingOptIn ? 'Yes' : 'No'],
+                    ['Communication Language:', contact.preferences.communicationLanguage]
                   ].map(([label, value], index) => (
                     <Box key={index} sx={{ display: 'flex' }}>
                       <Typography variant="body2" sx={{ fontWeight: 500, mr: 1 }}>
@@ -188,42 +219,152 @@ const ContactDetail = () => {
               </CardContent>
             </Card>
 
-            {!contact ? (
-              <Card sx={{ mt: 2 }}><CardContent><Typography color="error">Contact not found.</Typography></CardContent></Card>
-            ) : (
-              <Card sx={{ mt: 2, animation: `${cardFadeIn} 0.7s cubic-bezier(0.4,0,0.2,1)` }}>
-                <CardContent>
-                  <Typography variant="h6" gutterBottom>Addresses</Typography>
-                  {contact.addresses?.length > 0 ? contact.addresses.map((address: AddressDTO, idx: number) => (
-                    <Box key={idx} sx={{ mb: 1, p: 1.5, borderRadius: 2, background: theme.card.background, boxShadow: theme.card.boxShadow }}>
-                      <Typography variant="subtitle2" color="primary" fontWeight={600}>{address.type.toUpperCase()} {address.primary && '(Primary)'}</Typography>
-                      <Typography variant="body2">{address.street}, {address.city}, {address.state}, {address.postalCode}, {address.country}</Typography>
-                    </Box>
-                  )) : <Typography variant="body2" color="text.secondary">No addresses available</Typography>}
+            <Card sx={{ mt: 2, animation: `${cardFadeIn} 0.7s cubic-bezier(0.4,0,0.2,1)` }}>
+              <CardContent>
+                <Box sx={{ 
+                  display: 'flex', 
+                  justifyContent: 'space-between', 
+                  alignItems: 'center', 
+                  mb: 2 
+                }}>
+                  <Typography variant="h6">Addresses</Typography>
+                  <Button 
+                    variant="text" 
+                    size="small" 
+                    startIcon={<LinkIcon fontSize="small" />}
+                  >
+                    Add
+                  </Button>
+                </Box>
+                {contact.addresses?.length > 0 ? contact.addresses.map((address: AddressDTO, idx: number) => (
+                  <Box key={idx} sx={{ 
+                    mb: 1.5, 
+                    p: 1.5, 
+                    borderRadius: 2, 
+                    background: theme.card.background, 
+                    boxShadow: theme.card.boxShadow,
+                    border: `1px solid ${theme.palette.divider}`,
+                    transition: 'all 0.2s ease-in-out',
+                    '&:hover': {
+                      transform: 'translateY(-1px)',
+                      boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                    }
+                  }}>
+                    <Typography variant="subtitle2" color="primary" fontWeight={600} sx={{ mb: 0.5 }}>
+                      {address.type.toUpperCase()} {address.primary && '(Primary)'}
+                    </Typography>
+                    <Typography variant="body2" sx={{ color: theme.palette.text.secondary }}>
+                      {address.street}
+                    </Typography>
+                    <Typography variant="body2" sx={{ color: theme.palette.text.secondary }}>
+                      {address.city}, {address.state} {address.postalCode}
+                    </Typography>
+                    <Typography variant="body2" sx={{ color: theme.palette.text.secondary }}>
+                      {address.country}
+                    </Typography>
+                  </Box>
+                )) : <Typography variant="body2" color="text.secondary">No addresses available</Typography>}
+              </CardContent>
+            </Card>
 
-                  <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>Preferences</Typography>
-                  {contact.preferences ? (
-                    <Box sx={{ p: 1.5, borderRadius: 2, background: theme.card.background, boxShadow: theme.card.boxShadow }}>
-                      <Typography variant="body2">Preferred Method: <b>{contact.preferences.preferredContactMethod}</b></Typography>
-                      <Typography variant="body2">Preferred Time: <b>{contact.preferences.preferredContactTime}</b></Typography>
-                      <Typography variant="body2">Do Not Contact: <b>{contact.preferences.doNotContact ? 'Yes' : 'No'}</b></Typography>
-                      <Typography variant="body2">Marketing Opt-In: <b>{contact.preferences.marketingOptIn ? 'Yes' : 'No'}</b></Typography>
-                      <Typography variant="body2">Language: <b>{contact.preferences.communicationLanguage}</b></Typography>
-                    </Box>
-                  ) : <Typography variant="body2" color="text.secondary">No preferences available</Typography>}
+            <Card sx={{ mt: 2, animation: `${cardFadeIn} 0.7s cubic-bezier(0.4,0,0.2,1)` }}>
+              <CardContent>
+                <Box sx={{ 
+                  display: 'flex', 
+                  justifyContent: 'space-between', 
+                  alignItems: 'center', 
+                  mb: 2 
+                }}>
+                  <Typography variant="h6">Social Profiles</Typography>
+                  <Button 
+                    variant="text" 
+                    size="small" 
+                    startIcon={<LinkIcon fontSize="small" />}
+                  >
+                    Add
+                  </Button>
+                </Box>
+                {contact.socialProfiles?.length > 0 ? contact.socialProfiles.map((profile: SocialProfileDTO, idx: number) => {
+                  const platform = profile.platform.toLowerCase();
+                  const getPlatformIcon = () => {
+                    switch (platform) {
+                      case 'linkedin': return <LinkedInIcon />;
+                      case 'twitter': return <TwitterIcon />;
+                      case 'facebook': return <FacebookIcon />;
+                      case 'instagram': return <InstagramIcon />;
+                      case 'github': return <GitHubIcon />;
+                      default: return <LinkIcon />;
+                    }
+                  };
+                  
+                  const getPlatformTheme = () => {
+                    return theme.social[platform as keyof typeof theme.social] || theme.social.default;
+                  };
 
-                  <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>Social Profiles</Typography>
-                  {contact.socialProfiles?.length > 0 ? contact.socialProfiles.map((profile: SocialProfileDTO, idx: number) => (
-                    <Box key={idx} sx={{ mb: 1, p: 1.5, borderRadius: 2, background: theme.card.background, boxShadow: theme.card.boxShadow, display: 'flex', alignItems: 'center', gap: 1 }}>
-                      <a href={profile.profileUrl} target="_blank" rel="noopener noreferrer" style={{ color: theme.palette.primary.main, fontWeight: 600 }}>
-                        {profile.platform}: {profile.username}
-                      </a>
-                      {profile.verified && <span style={{ color: theme.status.customer.color, fontWeight: 700, marginLeft: 4 }}>✔️</span>}
+                  const platformTheme = getPlatformTheme();
+                  
+                  return (
+                    <Box 
+                      key={idx} 
+                      sx={{ 
+                        mb: 1.5, 
+                        p: 1.5, 
+                        borderRadius: 2, 
+                        background: platformTheme.bg,
+                        boxShadow: theme.card.boxShadow,
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 1.5,
+                        transition: 'all 0.2s ease-in-out',
+                        '&:hover': {
+                          transform: 'translateY(-1px)',
+                          boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                        }
+                      }}
+                    >
+                      <Box sx={{ 
+                        display: 'flex', 
+                        alignItems: 'center', 
+                        justifyContent: 'center',
+                        color: platformTheme.color,
+                        '& svg': {
+                          fontSize: 24
+                        }
+                      }}>
+                        {getPlatformIcon()}
+                      </Box>
+                      <Box sx={{ flex: 1 }}>
+                        <Link 
+                          href={profile.profileUrl} 
+                          target="_blank" 
+                          rel="noopener noreferrer" 
+                          sx={{ 
+                            color: platformTheme.color,
+                            textDecoration: 'none',
+                            fontWeight: 600,
+                            display: 'block',
+                            '&:hover': {
+                              textDecoration: 'underline'
+                            }
+                          }}
+                        >
+                          {profile.username}
+                        </Link>
+                      </Box>
+                      {profile.verified && (
+                        <Box sx={{ 
+                          color: theme.status.customer.color,
+                          display: 'flex',
+                          alignItems: 'center'
+                        }}>
+                          <span style={{ fontWeight: 700 }}>✔️</span>
+                        </Box>
+                      )}
                     </Box>
-                  )) : <Typography variant="body2" color="text.secondary">No social profiles available</Typography>}
-                </CardContent>
-              </Card>
-            )}
+                  );
+                }) : <Typography variant="body2" color="text.secondary">No social profiles available</Typography>}
+              </CardContent>
+            </Card>
           </Grid>
         )}
       </Grid>

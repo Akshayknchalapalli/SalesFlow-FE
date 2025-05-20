@@ -14,6 +14,7 @@ import {
 } from '@mui/material';
 import Grid from "@mui/material/GridLegacy";
 import type { ContactDTO, AddressDTO, ContactPreferencesDTO, SocialProfileDTO } from '../ContactDTO';
+import { mockContacts } from '../uiComponents/ContacstList';
 
 interface ContactInfoProps {
   isNew: boolean;
@@ -49,14 +50,63 @@ const defaultContact: ContactDTO = {
 
 const ContactInfo: React.FC<ContactInfoProps> = ({ isNew, contactId }: ContactInfoProps) => {
   const [contact, setContact] = React.useState<ContactDTO>(defaultContact);
+  const [isEditing, setIsEditing] = React.useState(false);
+
+  React.useEffect(() => {
+    if (!isNew && contactId) {
+      const foundContact = mockContacts.find(c => String(c.id) === contactId);
+      if (foundContact) {
+        setContact(foundContact);
+      }
+    }
+  }, [isNew, contactId]);
+
+  const handleInputChange = (field: keyof ContactDTO | string, value: any) => {
+    if (field.includes('.')) {
+      // Handle nested fields (e.g., preferences.preferredContactMethod)
+      const [parent, child] = field.split('.') as [keyof ContactDTO, string];
+      setContact(prev => {
+        const updatedParent = {
+          ...(prev[parent] as any),
+          [child]: value
+        };
+        return {
+          ...prev,
+          [parent]: updatedParent
+        };
+      });
+    } else {
+      setContact(prev => ({
+        ...prev,
+        [field]: value
+      }));
+    }
+  };
+
+  const handleSave = () => {
+    // Here you would typically make an API call to save the contact
+    console.log('Saving contact:', contact);
+    setIsEditing(false);
+  };
 
   return (
     <Card sx={{ boxShadow: 3 }}>
       <CardHeader
         title={
-          <Typography variant="h6">
-            {isNew ? 'New Contact Information' : 'Contact Information'}
-          </Typography>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <Typography variant="h6">
+              {isNew ? 'New Contact Information' : 'Contact Information'}
+            </Typography>
+            {!isNew && (
+              <Button 
+                variant="contained" 
+                color={isEditing ? "success" : "primary"}
+                onClick={() => isEditing ? handleSave() : setIsEditing(true)}
+              >
+                {isEditing ? "Save Changes" : "Edit Contact"}
+              </Button>
+            )}
+          </Box>
         }
       />
       <CardContent>
@@ -67,7 +117,9 @@ const ContactInfo: React.FC<ContactInfoProps> = ({ isNew, contactId }: ContactIn
                 fullWidth
                 label="First Name"
                 id="firstName"
-                defaultValue={!isNew ? contact.firstName : ''}
+                value={contact.firstName}
+                onChange={(e) => handleInputChange('firstName', e.target.value)}
+                disabled={!isNew && !isEditing}
                 placeholder="John"
               />
             </Grid>
@@ -76,7 +128,9 @@ const ContactInfo: React.FC<ContactInfoProps> = ({ isNew, contactId }: ContactIn
                 fullWidth
                 label="Last Name"
                 id="lastName"
-                defaultValue={!isNew ? contact.lastName : ''}
+                value={contact.lastName}
+                onChange={(e) => handleInputChange('lastName', e.target.value)}
+                disabled={!isNew && !isEditing}
                 placeholder="Doe"
               />
             </Grid>
@@ -88,7 +142,9 @@ const ContactInfo: React.FC<ContactInfoProps> = ({ isNew, contactId }: ContactIn
                 fullWidth
                 label="Title/Role"
                 id="title"
-                defaultValue={!isNew ? contact.jobTitle : ''}
+                value={contact.jobTitle}
+                onChange={(e) => handleInputChange('jobTitle', e.target.value)}
+                disabled={!isNew && !isEditing}
                 placeholder="CEO, Manager, etc."
               />
             </Grid>
@@ -97,7 +153,9 @@ const ContactInfo: React.FC<ContactInfoProps> = ({ isNew, contactId }: ContactIn
                 fullWidth
                 label="Company Name"
                 id="company"
-                defaultValue={!isNew ? contact.companyName : ''}
+                value={contact.companyName}
+                onChange={(e) => handleInputChange('companyName', e.target.value)}
+                disabled={!isNew && !isEditing}
                 placeholder="Company Ltd."
               />
             </Grid>
@@ -110,7 +168,9 @@ const ContactInfo: React.FC<ContactInfoProps> = ({ isNew, contactId }: ContactIn
                 label="Email"
                 type="email"
                 id="email"
-                defaultValue={!isNew ? contact.email : ''}
+                value={contact.email}
+                onChange={(e) => handleInputChange('email', e.target.value)}
+                disabled={!isNew && !isEditing}
                 placeholder="email@example.com"
               />
             </Grid>
@@ -119,7 +179,9 @@ const ContactInfo: React.FC<ContactInfoProps> = ({ isNew, contactId }: ContactIn
                 fullWidth
                 label="Phone"
                 id="phone"
-                defaultValue={!isNew ? contact.phone : ''}
+                value={contact.phone}
+                onChange={(e) => handleInputChange('phone', e.target.value)}
+                disabled={!isNew && !isEditing}
                 placeholder="(123) 456-7890"
               />
             </Grid>
@@ -132,7 +194,9 @@ const ContactInfo: React.FC<ContactInfoProps> = ({ isNew, contactId }: ContactIn
                 <Select
                   labelId="stage-label"
                   id="stage"
-                  defaultValue={!isNew ? contact.stage : 'prospect'}
+                  value={contact.stage}
+                  onChange={(e) => handleInputChange('stage', e.target.value)}
+                  disabled={!isNew && !isEditing}
                   label="Relationship Stage"
                 >
                   <MenuItem value="prospect">Prospect</MenuItem>
@@ -147,7 +211,9 @@ const ContactInfo: React.FC<ContactInfoProps> = ({ isNew, contactId }: ContactIn
                 <Select
                   labelId="preferredContactMethod-label"
                   id="preferredContactMethod"
-                  defaultValue={!isNew ? contact.preferences.preferredContactMethod : ''}
+                  value={contact.preferences.preferredContactMethod}
+                  onChange={(e) => handleInputChange('preferences.preferredContactMethod', e.target.value)}
+                  disabled={!isNew && !isEditing}
                   label="Preferred Contact Method"
                 >
                   <MenuItem value="email">Email</MenuItem>
@@ -165,7 +231,9 @@ const ContactInfo: React.FC<ContactInfoProps> = ({ isNew, contactId }: ContactIn
                 <Select
                   labelId="preferredContactTime-label"
                   id="preferredContactTime"
-                  defaultValue={!isNew ? contact.preferences.preferredContactTime : ''}
+                  value={contact.preferences.preferredContactTime}
+                  onChange={(e) => handleInputChange('preferences.preferredContactTime', e.target.value)}
+                  disabled={!isNew && !isEditing}
                   label="Preferred Contact Time"
                 >
                   <MenuItem value="morning">Morning</MenuItem>
@@ -176,42 +244,13 @@ const ContactInfo: React.FC<ContactInfoProps> = ({ isNew, contactId }: ContactIn
             </Grid>
             <Grid item xs={12} md={6}>
               <FormControl fullWidth>
-                <InputLabel id="doNotContact-label">Do Not Contact</InputLabel>
-                <Select
-                  labelId="doNotContact-label"
-                  id="doNotContact"
-                  defaultValue={!isNew ? contact.preferences.doNotContact ? 'Yes' : 'No' : 'No'}
-                  label="Do Not Contact"
-                >
-                  <MenuItem value="Yes">Yes</MenuItem>
-                  <MenuItem value="No">No</MenuItem>
-                </Select>
-              </FormControl>
-            </Grid>
-          </Grid>
-
-          <Grid container spacing={2}>
-            <Grid item xs={12} md={6}>
-              <FormControl fullWidth>
-                <InputLabel id="marketingOptIn-label">Marketing Opt-In</InputLabel>
-                <Select
-                  labelId="marketingOptIn-label"
-                  id="marketingOptIn"
-                  defaultValue={!isNew ? contact.preferences.marketingOptIn ? 'Yes' : 'No' : 'No'}
-                  label="Marketing Opt-In"
-                >
-                  <MenuItem value="Yes">Yes</MenuItem>
-                  <MenuItem value="No">No</MenuItem>
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <FormControl fullWidth>
                 <InputLabel id="communicationLanguage-label">Communication Language</InputLabel>
                 <Select
                   labelId="communicationLanguage-label"
                   id="communicationLanguage"
-                  defaultValue={!isNew ? contact.preferences.communicationLanguage : ''}
+                  value={contact.preferences.communicationLanguage}
+                  onChange={(e) => handleInputChange('preferences.communicationLanguage', e.target.value)}
+                  disabled={!isNew && !isEditing}
                   label="Communication Language"
                 >
                   <MenuItem value="English">English</MenuItem>
@@ -224,11 +263,48 @@ const ContactInfo: React.FC<ContactInfoProps> = ({ isNew, contactId }: ContactIn
 
           <Grid container spacing={2}>
             <Grid item xs={12} md={6}>
+              <FormControl fullWidth>
+                <InputLabel id="doNotContact-label">Do Not Contact</InputLabel>
+                <Select
+                  labelId="doNotContact-label"
+                  id="doNotContact"
+                  value={contact.preferences.doNotContact ? 'Yes' : 'No'}
+                  onChange={(e) => handleInputChange('preferences.doNotContact', e.target.value === 'Yes')}
+                  disabled={!isNew && !isEditing}
+                  label="Do Not Contact"
+                >
+                  <MenuItem value="Yes">Yes</MenuItem>
+                  <MenuItem value="No">No</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <FormControl fullWidth>
+                <InputLabel id="marketingOptIn-label">Marketing Opt-In</InputLabel>
+                <Select
+                  labelId="marketingOptIn-label"
+                  id="marketingOptIn"
+                  value={contact.preferences.marketingOptIn ? 'Yes' : 'No'}
+                  onChange={(e) => handleInputChange('preferences.marketingOptIn', e.target.value === 'Yes')}
+                  disabled={!isNew && !isEditing}
+                  label="Marketing Opt-In"
+                >
+                  <MenuItem value="Yes">Yes</MenuItem>
+                  <MenuItem value="No">No</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+          </Grid>
+
+          <Grid container spacing={2}>
+            <Grid item xs={12} md={6}>
               <TextField
                 fullWidth
                 label="Address"
                 id="address"
-                defaultValue={!isNew ? contact.addresses[0]?.street : ''}
+                value={contact.addresses[0]?.street}
+                onChange={(e) => handleInputChange('addresses.0.street', e.target.value)}
+                disabled={!isNew && !isEditing}
                 placeholder="123 Business St, City, State, ZIP"
               />
             </Grid>
@@ -237,7 +313,9 @@ const ContactInfo: React.FC<ContactInfoProps> = ({ isNew, contactId }: ContactIn
                 fullWidth
                 label="City"
                 id="city"
-                defaultValue={!isNew ? contact.addresses[0]?.city : ''}
+                value={contact.addresses[0]?.city}
+                onChange={(e) => handleInputChange('addresses.0.city', e.target.value)}
+                disabled={!isNew && !isEditing}
                 placeholder="City"
               />
             </Grid>
@@ -249,7 +327,9 @@ const ContactInfo: React.FC<ContactInfoProps> = ({ isNew, contactId }: ContactIn
                 fullWidth
                 label="State"
                 id="state"
-                defaultValue={!isNew ? contact.addresses[0]?.state : ''}
+                value={contact.addresses[0]?.state}
+                onChange={(e) => handleInputChange('addresses.0.state', e.target.value)}
+                disabled={!isNew && !isEditing}
                 placeholder="State"
               />
             </Grid>
@@ -258,7 +338,9 @@ const ContactInfo: React.FC<ContactInfoProps> = ({ isNew, contactId }: ContactIn
                 fullWidth
                 label="ZIP Code"
                 id="zipCode"
-                defaultValue={!isNew ? contact.addresses[0]?.postalCode : ''}
+                value={contact.addresses[0]?.postalCode}
+                onChange={(e) => handleInputChange('addresses.0.postalCode', e.target.value)}
+                disabled={!isNew && !isEditing}
                 placeholder="ZIP Code"
               />
             </Grid>
@@ -269,7 +351,9 @@ const ContactInfo: React.FC<ContactInfoProps> = ({ isNew, contactId }: ContactIn
             <Select
               labelId="owner-label"
               id="owner"
-              defaultValue={!isNew ? contact.ownerId : ''}
+              value={contact.ownerId}
+              onChange={(e) => handleInputChange('ownerId', e.target.value)}
+              disabled={!isNew && !isEditing}
               label="Owner"
             >
               <MenuItem value="Sarah Johnson">Sarah Johnson</MenuItem>
@@ -278,11 +362,26 @@ const ContactInfo: React.FC<ContactInfoProps> = ({ isNew, contactId }: ContactIn
             </Select>
           </FormControl>
 
-          <Box sx={{ display: 'flex', justifyContent: 'flex-end', pt: 2 }}>
-            <Button type="submit" variant="contained" size="large">
-              {isNew ? 'Create Contact' : 'Update Contact'}
-            </Button>
-          </Box>
+          {isNew || isEditing ? (
+            <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2, mt: 2 }}>
+              {!isNew && (
+                <Button 
+                  variant="outlined" 
+                  color="secondary" 
+                  onClick={() => setIsEditing(false)}
+                >
+                  Cancel
+                </Button>
+              )}
+              <Button 
+                variant="contained" 
+                color="primary" 
+                onClick={handleSave}
+              >
+                {isNew ? 'Create Contact' : 'Save Changes'}
+              </Button>
+            </Box>
+          ) : null}
         </Box>
       </CardContent>
     </Card>
